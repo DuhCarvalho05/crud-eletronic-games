@@ -7,7 +7,7 @@ public interface IRepository<T, I> {
 
 	public void save(T t);
 	
-	public void saveAll(Collection<T> colletction);
+	public void saveAll(Collection<T> collection);
 	
 	public T find(I identifier);
 	
