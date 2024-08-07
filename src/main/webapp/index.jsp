@@ -10,6 +10,6 @@
 <title>Index</title>
 </head>
 <body>
-	Index page
+	<span>Index page</span>
 </body>
 </html>

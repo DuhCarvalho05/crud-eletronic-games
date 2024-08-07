@@ -1,26 +1,24 @@
 package model.entities.User;
 
-import fileSystem.ObjectConvert;
+public class User {
 
-public class User implements ObjectConvert<User> {
-	
 	private Long id;
 	private String name;
 	private String email;
 	private String password;
 	private UserType type;
-	
+
 	public User() {
 	}
-	
-	private User(Long id, String name, String email, String password, UserType type) {
+
+	public User(Long id, String name, String email, String password, UserType type) {
 		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.password = password;
 		this.type = type;
 	}
-	
+
 	public User(String name, String email, String password, UserType type) {
 		this.name = name;
 		this.email = email;
@@ -68,14 +66,4 @@ public class User implements ObjectConvert<User> {
 		this.type = type;
 	}
 
-	@Override
-	public User fromString(String... args) {
-		return new User(Long.parseLong(args[0]), args[1], args[2], args[3], UserType.valueOf(args[4]));
-	}
-	
-	@Override
-	public String toString() {
-		return String.format("%d;%s;%s;%s;%s", this.id, this.name, this.email, this.password, this.type);
-	}
-	
 }

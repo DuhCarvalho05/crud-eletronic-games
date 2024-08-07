@@ -6,7 +6,7 @@ public class CategoryDto implements ObjectConvert<CategoryDto> {
 
 	private Long id;
 	private String name;
-	
+
 	public CategoryDto() {}
 
 	public CategoryDto(Long id, String name) {
@@ -32,5 +32,5 @@ public class CategoryDto implements ObjectConvert<CategoryDto> {
 	public String toString() {
 		return String.format("%s;%s", id, name);
 	}
-	
+
 }

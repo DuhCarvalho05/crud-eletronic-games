@@ -4,12 +4,12 @@ import model.entities.Game.Game;
 import model.entities.User.User;
 
 public class Rating {
-	
+
 	private Long id;
 	private String description;
 	private User user;
 	private Game game;
-	
+
 	public Rating() {}
 
 	public Rating(Long id, String description, User user, Game game) {

@@ -1,12 +1,12 @@
 package model.entities.Game;
 
 public class Image {
-	
+
 	private String name;
 	private ImageType type;
-	
+
 	public Image() {}
-	
+
 	public Image(String name, ImageType type) {
 		super();
 		this.name = name;
@@ -28,7 +28,7 @@ public class Image {
 	public void setType(ImageType type) {
 		this.type = type;
 	}
-	
-	
+
+
 
 }

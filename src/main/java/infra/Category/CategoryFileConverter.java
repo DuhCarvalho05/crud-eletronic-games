@@ -1,4 +1,4 @@
-package infra;
+package infra.Category;
 
 import java.util.ArrayList;
 import java.util.Collection;

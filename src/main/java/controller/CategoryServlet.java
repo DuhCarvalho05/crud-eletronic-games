@@ -18,9 +18,9 @@ import repository.impl.CategoryRepository;
  */
 @WebServlet("/category")
 public class CategoryServlet extends HttpServlet {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	private final CategoryRepository categoryRepository;
 
 	/**
@@ -35,11 +35,12 @@ public class CategoryServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = request.getParameter("categoryId");
-		
+
 		PrintWriter pw = response.getWriter();
-		
+
 		if(id == null || id.isEmpty()) {
 			Collection<Category> categories = categoryRepository.findAll();
 			categories.forEach( category -> pw.write(category.toString() + "\n") );
@@ -56,11 +57,12 @@ public class CategoryServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String name = request.getParameter("name");
-		
+
 		PrintWriter pw = response.getWriter();
-		
+
 		if(name.isEmpty()) {
 			pw.write("FIELDS CANT BE EMPTY");
 		}else {
@@ -73,17 +75,17 @@ public class CategoryServlet extends HttpServlet {
 
 	@Override
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String id = request.getParameter("gameId");
-		
+		String id = request.getParameter("categoryId");
+
 		PrintWriter pw = response.getWriter();
-		
+
 		if(id == null || id.isEmpty()){
 			pw.write("ID CANT BE EMPTY");
 		}else {
 			categoryRepository.delete(Long.parseLong(id));
 		}
 	}
-	
-	
+
+
 
 }

@@ -20,5 +20,5 @@ public class FileInterpreter {
 
         return result;
 	}
-	
+
 }

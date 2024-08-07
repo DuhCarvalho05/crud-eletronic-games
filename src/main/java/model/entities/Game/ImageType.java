@@ -1,7 +1,7 @@
 package model.entities.Game;
 
 public enum ImageType {
-	
+
 	COVER ("COVER"),
     BACKGROUND ("BACKGROUND"),
     DEFAULT ("DEFAULT");

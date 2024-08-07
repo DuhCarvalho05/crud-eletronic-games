@@ -1,10 +1,10 @@
-package model.entities.Game;
+package model.entities.Category;
 
 public class Category {
 
 	private Long id;
 	private String name;
-	
+
 	public Category() {}
 
 	public Category(Long id, String name) {
@@ -28,5 +28,5 @@ public class Category {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 }

@@ -6,7 +6,7 @@ import java.util.Map;
 
 import fileSystem.FileInterpreter;
 import fileSystem.FileManagement;
-import infra.CategoryFileConverter;
+import infra.Category.CategoryFileConverter;
 import model.dto.Category.CategoryDto;
 import model.entities.Category.Category;
 import repository.IRepository;
@@ -14,11 +14,11 @@ import repository.IRepository;
 public class CategoryRepository implements IRepository<Category, Long> {
 
 	private static Long SEQUENCE = 0L;
-	
+
 	private final FileManagement fileManagement;
     private final FileInterpreter fileInterpreter;
     private final CategoryFileConverter categoryFileConverter;
-    
+
 	public CategoryRepository() {
 		this.fileManagement = new FileManagement("/Users/caiolopes/Downloads/category.csv");
 		this.fileInterpreter = new FileInterpreter();
@@ -30,11 +30,11 @@ public class CategoryRepository implements IRepository<Category, Long> {
 		if(category.getId() == null) {
 			category.setId(++SEQUENCE);
 		}
-		
+
 		delete(category.getId());
 		CategoryDto categoryDto = new CategoryDto(category.getId(), category.getName());
 		fileManagement.write(categoryDto);
-		
+
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class CategoryRepository implements IRepository<Category, Long> {
 		for(Category category : collection) {
 			save(category);
 		}
-		
+
 	}
 
 	@Override
@@ -59,10 +59,10 @@ public class CategoryRepository implements IRepository<Category, Long> {
 	@Override
 	public Collection<Category> findAll() {
 		Collection<CategoryDto> categoriesDto = categoryFileConverter.all(fileInterpreter.interpret(fileManagement.read(), CategoryDto.class));
-		
+
 		Collection<Category> categories = new ArrayList<>();
 		categoriesDto.forEach( dto -> categories.add(generate(dto)) );
-		
+
 		return categories;
 	}
 
@@ -83,9 +83,9 @@ public class CategoryRepository implements IRepository<Category, Long> {
 	@Override
 	public void deleteAll(Map<String, Object> params) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	private Category generate(CategoryDto categoryDto) {
 		return new Category(categoryDto.getId(), categoryDto.getName());
 	}
