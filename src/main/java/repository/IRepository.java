@@ -17,6 +17,4 @@ public interface IRepository<T, I> {
 
 	public void delete(I identifier);
 
-	public void deleteAll(Map<String, Object> params);
-
 }

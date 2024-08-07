@@ -6,7 +6,7 @@ import java.util.Collection;
 import fileSystem.FileConvert;
 import model.dto.Game.RequirementDto;
 
-public class RequirementFileConvert implements FileConvert<RequirementDto> {
+public class RequirementFileConverter implements FileConvert<RequirementDto> {
 
 	@Override
 	public RequirementDto generate(String... args) {
@@ -19,6 +19,5 @@ public class RequirementFileConvert implements FileConvert<RequirementDto> {
 		dataset.forEach( requirement ->  requirementsDto.add(generate(requirement)));
 		return requirementsDto;
 	}
-	
 	
 }

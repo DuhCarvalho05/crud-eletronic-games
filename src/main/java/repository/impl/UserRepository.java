@@ -80,12 +80,6 @@ public class UserRepository implements IRepository<User, Long> {
         saveAll(users);
 	}
 
-	@Override
-	public void deleteAll(Map<String, Object> params) {
-		// TODO Auto-generated method stub
-
-	}
-
 	private User generate(UserDto userDto) {
 		return new User(userDto.getId(), userDto.getName(), userDto.getEmail(), userDto.getPassword(), userDto.getType());
 

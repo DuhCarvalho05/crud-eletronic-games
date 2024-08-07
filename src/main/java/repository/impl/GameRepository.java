@@ -9,7 +9,7 @@ import fileSystem.FileInterpreter;
 import fileSystem.FileManagement;
 import infra.Game.GameFileConverter;
 import infra.Game.PlatformFileConverter;
-import infra.Game.RequirementFileConvert;
+import infra.Game.RequirementFileConverter;
 import model.dto.Game.GameDto;
 import model.dto.Game.PlatformDto;
 import model.dto.Game.RequirementDto;
@@ -29,12 +29,11 @@ public class GameRepository implements IRepository<Game, Long> {
     private final CategoryRepository categoryRepository;
     
     private final FileManagement requirementManagement;
-    private final RequirementFileConvert requirementFileConvert;
+    private final RequirementFileConverter requirementFileConverter;
     
     private final FileManagement platformManagement;
     private final PlatformFileConverter platformFileConverter;
     
-
     public GameRepository() {
         this.fileInterpreter = new FileInterpreter();
         
@@ -44,10 +43,11 @@ public class GameRepository implements IRepository<Game, Long> {
         this.categoryRepository = new CategoryRepository();
         
         this.requirementManagement = new FileManagement("/Users/caiolopes/Downloads/requirement.csv");
-        this.requirementFileConvert = new RequirementFileConvert();
+        this.requirementFileConverter = new RequirementFileConverter();
         
         this.platformManagement = new FileManagement("/Users/caiolopes/Downloads/platform.csv");
         this.platformFileConverter = new PlatformFileConverter();
+        
     }
 
 	@Override
@@ -96,7 +96,7 @@ public class GameRepository implements IRepository<Game, Long> {
 	public Collection<Game> findAll() {
 		Collection<GameDto> gamesDto = gameFileConverter.all(fileInterpreter.interpret(fileManagement.read(), GameDto.class));
 		
-		Collection<RequirementDto> requirementsDto = requirementFileConvert.all(fileInterpreter.interpret(requirementManagement.read(), RequirementDto.class));
+		Collection<RequirementDto> requirementsDto = requirementFileConverter.all(fileInterpreter.interpret(requirementManagement.read(), RequirementDto.class));
 		
 		Collection<PlatformDto> platformsDto = platformFileConverter.all(fileInterpreter.interpret(platformManagement.read(), PlatformDto.class));
 		
@@ -116,7 +116,7 @@ public class GameRepository implements IRepository<Game, Long> {
 	@Override
 	public void delete(Long identifier) {
 		Collection<Game> games = findAll();
-		Collection<RequirementDto> requirementsDto = requirementFileConvert.all(fileInterpreter.interpret(requirementManagement.read(), RequirementDto.class));
+		Collection<RequirementDto> requirementsDto = requirementFileConverter.all(fileInterpreter.interpret(requirementManagement.read(), RequirementDto.class));
 		Collection<PlatformDto> platformsDto = platformFileConverter.all(fileInterpreter.interpret(platformManagement.read(), PlatformDto.class));	
 		
         fileManagement.clear();
@@ -130,11 +130,6 @@ public class GameRepository implements IRepository<Game, Long> {
         games.forEach( game -> fileManagement.write(new GameDto(game.getId(), game.getTitle(), game.getPublisher(), game.getRelease(), game.getSynopsis(), game.getCategory().getId())));
         requirementsDto.forEach(requirementManagement::write);
         platformsDto.forEach(platformManagement::write);
-	}
-
-	@Override
-	public void deleteAll(Map<String, Object> params) {
-		// TODO Auto-generated method stub	
 	}
 
 	private Game generate(GameDto gameDto, Collection<RequirementDto> requirementsDto, Collection<PlatformDto> platformsDto) {

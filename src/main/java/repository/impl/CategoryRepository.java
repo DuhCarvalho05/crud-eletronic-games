@@ -80,12 +80,6 @@ public class CategoryRepository implements IRepository<Category, Long> {
 		saveAll(categories);
 	}
 
-	@Override
-	public void deleteAll(Map<String, Object> params) {
-		// TODO Auto-generated method stub
-
-	}
-
 	private Category generate(CategoryDto categoryDto) {
 		return new Category(categoryDto.getId(), categoryDto.getName());
 	}
