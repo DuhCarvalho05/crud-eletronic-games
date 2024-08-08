@@ -37,15 +37,15 @@ public class GameRepository implements IRepository<Game, Long> {
     public GameRepository() {
         this.fileInterpreter = new FileInterpreter();
         
-        this.fileManagement = new FileManagement("/Users/caiolopes/Downloads/game.csv");
+        this.fileManagement = new FileManagement("C:\\jsp_dados\\game.csv");
         this.gameFileConverter = new GameFileConverter();
 
         this.categoryRepository = new CategoryRepository();
         
-        this.requirementManagement = new FileManagement("/Users/caiolopes/Downloads/requirement.csv");
+        this.requirementManagement = new FileManagement("C:\\jsp_dados\\requirement.csv");
         this.requirementFileConverter = new RequirementFileConverter();
         
-        this.platformManagement = new FileManagement("/Users/caiolopes/Downloads/platform.csv");
+        this.platformManagement = new FileManagement("C:\\jsp_dados\\platform.csv");
         this.platformFileConverter = new PlatformFileConverter();
         
     }

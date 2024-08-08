@@ -25,7 +25,7 @@ public class RatingRepository implements IRepository<Rating, Long> {
     private final GameRepository gameRepository;
     
 	public RatingRepository() {
-		this.fileManagement = new FileManagement("/Users/caiolopes/Downloads/rating.csv");
+		this.fileManagement = new FileManagement("C:\\jsp_dados\\rating.csv");
 		this.fileInterpreter = new FileInterpreter();
 		this.ratingFileConverter = new RatingFileConverter();
 		
