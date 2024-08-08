@@ -15,12 +15,14 @@ public class UserRepository implements IRepository<User, Long> {
 
 	private static Long SEQUENCE = 0L;
 
+	private String userFileName = "user.csv";
+	
 	private final FileManagement fileManagement;
     private final FileInterpreter fileInterpreter;
     private final UserFileConverter userFileConverter;
 
     public UserRepository() {
-        this.fileManagement = new FileManagement("/Users/caiolopes/Downloads/user.csv");
+        this.fileManagement = new FileManagement();
         this.fileInterpreter = new FileInterpreter();
         this.userFileConverter = new UserFileConverter();
     }
@@ -33,7 +35,7 @@ public class UserRepository implements IRepository<User, Long> {
 
 		delete(user.getId());
 		UserDto userDto = new UserDto(user.getId(), user.getName(), user.getEmail(), user.getPassword(), user.getType());
-        fileManagement.write(userDto);
+        fileManagement.write(userDto, userFileName);
 
 	}
 
@@ -58,7 +60,7 @@ public class UserRepository implements IRepository<User, Long> {
 
 	@Override
 	public Collection<User> findAll() {
-		Collection<UserDto> usersDto = userFileConverter.all(fileInterpreter.interpret(fileManagement.read(), UserDto.class));
+		Collection<UserDto> usersDto = userFileConverter.all(fileInterpreter.interpret(fileManagement.read(userFileName), UserDto.class));
 
 		Collection<User> users = new ArrayList<>();
 		usersDto.forEach( dto -> users.add(this.generate(dto)) );
@@ -68,14 +70,14 @@ public class UserRepository implements IRepository<User, Long> {
 
 	@Override
 	public Collection<User> findAll(Map<String, Object> params) {
-		// TODO Auto-generated method stub
+		System.out.println();
 		return null;
 	}
 
 	@Override
 	public void delete(Long identifier) {
 		Collection<User> users = findAll();
-        fileManagement.clear();
+        fileManagement.clear(userFileName);
         users.removeIf(user -> user.getId().equals(identifier));
         saveAll(users);
 	}

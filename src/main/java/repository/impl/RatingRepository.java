@@ -17,6 +17,8 @@ public class RatingRepository implements IRepository<Rating, Long> {
 
 	private static Long SEQUENCE = 0L;
 	
+	private final String ratingFileName = "rating.csv";
+	
 	private final FileManagement fileManagement;
     private final FileInterpreter fileInterpreter;
     private final RatingFileConverter ratingFileConverter;
@@ -25,7 +27,7 @@ public class RatingRepository implements IRepository<Rating, Long> {
     private final GameRepository gameRepository;
     
 	public RatingRepository() {
-		this.fileManagement = new FileManagement("/Users/caiolopes/Downloads/rating.csv");
+		this.fileManagement = new FileManagement();
 		this.fileInterpreter = new FileInterpreter();
 		this.ratingFileConverter = new RatingFileConverter();
 		
@@ -41,7 +43,7 @@ public class RatingRepository implements IRepository<Rating, Long> {
 		
 		delete(rating.getId());
 		RatingDto ratingDto = new RatingDto(rating.getId(), rating.getDescription(), rating.getStars(), rating.getCreatedAt(), rating.getUser().getId(), rating.getGame().getId());
-		fileManagement.write(ratingDto);
+		fileManagement.write(ratingDto, ratingFileName);
 	}
 
 	@Override
@@ -65,7 +67,7 @@ public class RatingRepository implements IRepository<Rating, Long> {
 
 	@Override
 	public Collection<Rating> findAll() {
-		Collection<RatingDto> ratingsDto = ratingFileConverter.all(fileInterpreter.interpret(fileManagement.read(), RatingDto.class));
+		Collection<RatingDto> ratingsDto = ratingFileConverter.all(fileInterpreter.interpret(fileManagement.read(ratingFileName), RatingDto.class));
 		
 		Collection<Rating> ratings = new ArrayList<>();
 		ratingsDto.forEach( dto -> ratings.add(generate(dto)));
@@ -81,7 +83,7 @@ public class RatingRepository implements IRepository<Rating, Long> {
 	@Override
 	public void delete(Long identifier) {
 		Collection<Rating> ratings = findAll();
-		fileManagement.clear();
+		fileManagement.clear(ratingFileName);
 		ratings.removeIf( rating -> rating.getId().equals(identifier) );
 		saveAll(ratings);
 		
