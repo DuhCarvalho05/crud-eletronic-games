@@ -40,6 +40,8 @@ public class UserServlet extends HttpServlet {
 		String id = request.getParameter("userId");
 
 		PrintWriter pw = response.getWriter();
+		
+		userRepository.findAll(null);
 
 		if(id == null || id.isEmpty()) {
 			Collection<User> users = userRepository.findAll();

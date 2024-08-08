@@ -14,13 +14,15 @@ import repository.IRepository;
 public class CategoryRepository implements IRepository<Category, Long> {
 
 	private static Long SEQUENCE = 0L;
+	
+	private String categoryFileName = "category.csv";
 
 	private final FileManagement fileManagement;
     private final FileInterpreter fileInterpreter;
     private final CategoryFileConverter categoryFileConverter;
 
 	public CategoryRepository() {
-		this.fileManagement = new FileManagement("/Users/caiolopes/Downloads/category.csv");
+		this.fileManagement = new FileManagement();
 		this.fileInterpreter = new FileInterpreter();
 		this.categoryFileConverter =  new CategoryFileConverter();
 	}
@@ -33,7 +35,7 @@ public class CategoryRepository implements IRepository<Category, Long> {
 
 		delete(category.getId());
 		CategoryDto categoryDto = new CategoryDto(category.getId(), category.getName());
-		fileManagement.write(categoryDto);
+		fileManagement.write(categoryDto, categoryFileName);
 
 	}
 
@@ -58,7 +60,7 @@ public class CategoryRepository implements IRepository<Category, Long> {
 
 	@Override
 	public Collection<Category> findAll() {
-		Collection<CategoryDto> categoriesDto = categoryFileConverter.all(fileInterpreter.interpret(fileManagement.read(), CategoryDto.class));
+		Collection<CategoryDto> categoriesDto = categoryFileConverter.all(fileInterpreter.interpret(fileManagement.read(categoryFileName), CategoryDto.class));
 
 		Collection<Category> categories = new ArrayList<>();
 		categoriesDto.forEach( dto -> categories.add(generate(dto)) );
@@ -75,7 +77,7 @@ public class CategoryRepository implements IRepository<Category, Long> {
 	@Override
 	public void delete(Long identifier) {
 		Collection<Category> categories = findAll();
-		fileManagement.clear();
+		fileManagement.clear(categoryFileName);
 		categories.removeIf( category -> category.getId().equals(identifier) );
 		saveAll(categories);
 	}
