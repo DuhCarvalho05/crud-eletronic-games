@@ -2,7 +2,6 @@ package repository.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Map;
 
 import fileSystem.FileInterpreter;
 import fileSystem.FileManagement;
@@ -14,7 +13,7 @@ import repository.IRepository;
 public class CategoryRepository implements IRepository<Category, Long> {
 
 	private static Long SEQUENCE = 0L;
-	
+
 	private String categoryFileName = "category.csv";
 
 	private final FileManagement fileManagement;
@@ -33,7 +32,7 @@ public class CategoryRepository implements IRepository<Category, Long> {
 			category.setId(++SEQUENCE);
 		}
 
-		delete(category.getId());
+		deleteById(category.getId());
 		CategoryDto categoryDto = new CategoryDto(category.getId(), category.getName());
 		fileManagement.write(categoryDto, categoryFileName);
 
@@ -48,7 +47,7 @@ public class CategoryRepository implements IRepository<Category, Long> {
 	}
 
 	@Override
-	public Category find(Long identifier) {
+	public Category findById(Long identifier) {
 		Collection<Category> categories = findAll();
 		for(Category category : categories) {
 			if(category.getId().equals(identifier)) {
@@ -69,13 +68,7 @@ public class CategoryRepository implements IRepository<Category, Long> {
 	}
 
 	@Override
-	public Collection<Category> findAll(Map<String, Object> params) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void delete(Long identifier) {
+	public void deleteById(Long identifier) {
 		Collection<Category> categories = findAll();
 		fileManagement.clear(categoryFileName);
 		categories.removeIf( category -> category.getId().equals(identifier) );

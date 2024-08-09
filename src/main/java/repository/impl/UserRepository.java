@@ -2,7 +2,6 @@ package repository.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Map;
 
 import fileSystem.FileInterpreter;
 import fileSystem.FileManagement;
@@ -16,7 +15,7 @@ public class UserRepository implements IRepository<User, Long> {
 	private static Long SEQUENCE = 0L;
 
 	private String userFileName = "user.csv";
-	
+
 	private final FileManagement fileManagement;
     private final FileInterpreter fileInterpreter;
     private final UserFileConverter userFileConverter;
@@ -33,7 +32,7 @@ public class UserRepository implements IRepository<User, Long> {
 			user.setId(++SEQUENCE);
 		}
 
-		delete(user.getId());
+		deleteById(user.getId());
 		UserDto userDto = new UserDto(user.getId(), user.getName(), user.getEmail(), user.getPassword(), user.getType());
         fileManagement.write(userDto, userFileName);
 
@@ -48,7 +47,7 @@ public class UserRepository implements IRepository<User, Long> {
 	}
 
 	@Override
-	public User find(Long identifier) {
+	public User findById(Long identifier) {
 		Collection<User> users = findAll();
         for (User user : users) {
             if(user.getId().equals(identifier)){
@@ -69,22 +68,25 @@ public class UserRepository implements IRepository<User, Long> {
 	}
 
 	@Override
-	public Collection<User> findAll(Map<String, Object> params) {
-		System.out.println();
-		return null;
-	}
-
-	@Override
-	public void delete(Long identifier) {
+	public void deleteById(Long identifier) {
 		Collection<User> users = findAll();
         fileManagement.clear(userFileName);
         users.removeIf(user -> user.getId().equals(identifier));
         saveAll(users);
 	}
+	
+	public User findByEmail(String email) {
+		Collection<User> users = findAll();
+        for (User user : users) {
+            if(user.getEmail().equals(email)){
+                return user;
+            }
+        }
+        return null;
+	}
 
 	private User generate(UserDto userDto) {
 		return new User(userDto.getId(), userDto.getName(), userDto.getEmail(), userDto.getPassword(), userDto.getType());
-
 	}
 
 }

@@ -15,10 +15,11 @@ public class FileManagement {
     	File[] rootDrive = File.listRoots();
     	String username = System.getProperty("user.name");
     	String root = rootDrive[0].toString();
-        	
+
     	this.rootPath = String.format("%sUsers/%s/csv/", root, username);
-    
+
     	File folder = new File(rootPath);
+    	
     	folder.mkdir();
     }
 
