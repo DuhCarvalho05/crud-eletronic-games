@@ -43,8 +43,8 @@ public class GameRepository implements IRepository<Game, Long> {
         this.categoryRepository = new CategoryRepository();
 
         this.requirementFileConverter = new RequirementFileConverter();
+      
         this.platformFileConverter = new PlatformFileConverter();
-
     }
 
 	@Override

@@ -60,6 +60,7 @@ public class UserServlet extends HttpServlet {
 	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String url = "/loginUser.jsp";
 		String name = request.getParameter("name");
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
@@ -73,6 +74,7 @@ public class UserServlet extends HttpServlet {
 			userRepository.save(user);
 		}
 
+		getServletContext().getRequestDispatcher(url).forward(request, response);
 	}
 
 	@Override
