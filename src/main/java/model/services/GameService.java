@@ -21,6 +21,8 @@ import repository.impl.GameRepository;
 
 public class GameService {
 	
+	private final String uploadPath = "/Users/caiolopes/images/";
+	
 	private final GameRepository gameRepository;
 	private final CategoryRepository categoryRepository;
 	
@@ -72,8 +74,6 @@ public class GameService {
 			if(category != null) {
 				game.setCategory(category);
 			}
-			
-			String uploadPath = "/Users/caiolopes/images/";
 			
 			File uploadDir = new File(uploadPath);
 			
