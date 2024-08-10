@@ -21,13 +21,13 @@ public class RatingService {
 	private final RatingRepository ratingRepository;
 	private final UserRepository userRepository;
 	private final GameRepository gameRepository;
-	
+
 	public RatingService() {
 		this.ratingRepository = new RatingRepository();
         this.userRepository = new UserRepository();
         this.gameRepository = new GameRepository();
 	}
-	
+
 	public void register(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String description = request.getParameter("description");
 		String stars = request.getParameter("stars");
@@ -59,7 +59,7 @@ public class RatingService {
 			pw.write("CREATED");
 		}
 	}
-	
+
 	public void retrieve(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = request.getParameter("ratingId");
 
@@ -88,7 +88,7 @@ public class RatingService {
 			}
 		}
 	}
-	
+
 	public void remove(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = request.getParameter("ratingId");
 
@@ -101,5 +101,5 @@ public class RatingService {
 			pw.write("DELETED");
 		}
 	}
-	
+
 }

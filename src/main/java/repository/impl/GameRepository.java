@@ -113,11 +113,33 @@ public class GameRepository implements IRepository<Game, Long> {
 		platformsDto.removeIf( plat -> plat.getGameId().equals(identifier) );
 		requirementsDto.removeIf( req -> req.getGameId().equals(identifier) );
         games.removeIf( game -> game.getId().equals(identifier) );
-        
+
 
         games.forEach( game -> fileManagement.write(new GameDto(game.getId(), game.getTitle(), game.getImageName(), game.getPublisher(), game.getRelease(), game.getSynopsis(), game.getCategory().getId()), gameFileName));
         requirementsDto.forEach(req -> fileManagement.write(req, requirementFileName));
         platformsDto.forEach( plat -> fileManagement.write(plat, platformFileName));
+	}
+
+	public Collection<Game> searchByTitle(String title){
+		Collection<Game> games = findAll();
+		Collection<Game> resultGames = new ArrayList<>();
+		for(Game game : games) {
+			if(game.getTitle().contains(title)) {
+				resultGames.add(game);
+			}
+		}
+		return resultGames;
+	}
+
+	public Collection<Game> findAllByCategory(Long categoryId){
+		Collection<Game> games = findAll();
+		Collection<Game> resultGames = new ArrayList<>();
+		for(Game game : games) {
+			if(game.getCategory().getId().equals(categoryId)) {
+				resultGames.add(game);
+			}
+		}
+		return resultGames;
 	}
 
 	private Game generate(GameDto gameDto, Collection<RequirementDto> requirementsDto, Collection<PlatformDto> platformsDto) {

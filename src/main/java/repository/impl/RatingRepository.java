@@ -78,8 +78,7 @@ public class RatingRepository implements IRepository<Rating, Long> {
 		Collection<Rating> ratings = findAll();
 		fileManagement.clear(ratingFileName);
 		ratings.removeIf( rating -> rating.getId().equals(identifier) );
-		saveAll(ratings);
-
+		ratings.forEach( rating -> fileManagement.write(new RatingDto(rating.getId(), rating.getDescription(), rating.getStars(), rating.getCreatedAt(), rating.getUser().getId(), rating.getGame().getId()), ratingFileName) );
 	}
 
 	private Rating generate(RatingDto ratingDto) {

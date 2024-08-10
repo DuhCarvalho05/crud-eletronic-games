@@ -13,11 +13,11 @@ import repository.impl.CategoryRepository;
 public class CategoryService {
 
 	private final CategoryRepository categoryRepository;
-	
+
 	public CategoryService() {
 		this.categoryRepository = new CategoryRepository();
 	}
-	
+
 	public void register(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String id = request.getParameter("categoryId");
 
@@ -35,7 +35,7 @@ public class CategoryService {
 			}
 		}
 	}
-	
+
 	public void retrieve(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String name = request.getParameter("name");
 
@@ -50,7 +50,7 @@ public class CategoryService {
 			pw.write("CREATED");
 		}
 	}
-	
+
 	public void remove(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String id = request.getParameter("categoryId");
 

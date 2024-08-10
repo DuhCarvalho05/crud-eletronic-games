@@ -15,11 +15,11 @@ import repository.impl.UserRepository;
 public class UserService {
 
 	private final UserRepository userRepository;
-	
+
 	public UserService() {
 		this.userRepository = new UserRepository();
 	}
-	
+
 	public void register(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String name = request.getParameter("name");
 		String email = request.getParameter("email");
@@ -34,7 +34,7 @@ public class UserService {
 			userRepository.save(user);
 		}
 	}
-	
+
 	public void retrieve(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = request.getParameter("userId");
 
@@ -52,7 +52,7 @@ public class UserService {
 			}
 		}
 	}
-	
+
 	public void remove(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = request.getParameter("userId");
 
@@ -65,5 +65,5 @@ public class UserService {
 		}
 
 	}
-	
+
 }

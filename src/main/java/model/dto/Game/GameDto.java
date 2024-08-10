@@ -33,7 +33,7 @@ public class GameDto implements Writable<GameDto> {
 	public String getTitle() {
 		return title;
 	}
-	
+
 	public String getImageName() {
 		return imageName;
 	}

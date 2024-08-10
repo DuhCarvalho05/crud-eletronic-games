@@ -20,17 +20,17 @@ import repository.impl.CategoryRepository;
 import repository.impl.GameRepository;
 
 public class GameService {
-	
+
 	private final String uploadPath = "/Users/caiolopes/images/";
-	
+
 	private final GameRepository gameRepository;
 	private final CategoryRepository categoryRepository;
-	
+
 	public GameService() {
 		this.gameRepository = new GameRepository();
 		this.categoryRepository = new CategoryRepository();
 	}
-	
+
 	public void register(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		String title = request.getParameter("title");
 		String publisher = request.getParameter("publisher");
@@ -40,7 +40,7 @@ public class GameService {
 		String requirementNotMapped = request.getParameter("requirement");
 		String platformNotMapped = request.getParameter("platform");
 		Part imageNotMapped = request.getPart("image");
-		
+
 		PrintWriter pw = response.getWriter();
 
 		if(title.isEmpty() || publisher.isEmpty() || release.isEmpty() || synopsis.isEmpty() || categoryId.isEmpty() || requirementNotMapped.isEmpty() || platformNotMapped.isEmpty()) {
@@ -74,13 +74,14 @@ public class GameService {
 			if(category != null) {
 				game.setCategory(category);
 			}
-			
+
 			File uploadDir = new File(uploadPath);
-			
-			if (!uploadDir.exists()) 
+
+			if (!uploadDir.exists()) {
 				uploadDir.mkdir();
-			
-			
+			}
+
+
 			if(!imageNotMapped.getName().isEmpty()) {
 				String fileName = generateFileName(getFileName(imageNotMapped));
 				imageNotMapped.write(uploadPath + File.separator + fileName);
@@ -91,7 +92,7 @@ public class GameService {
 			pw.write("CREATED");
 		}
 	}
-	
+
 	public void retrieve(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String id = request.getParameter("gameId");
 
@@ -119,7 +120,7 @@ public class GameService {
 			}
 		}
 	}
-	
+
 	public void remove(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String id = request.getParameter("gameId");
 
@@ -131,7 +132,7 @@ public class GameService {
 			gameRepository.deleteById(Long.parseLong(id));
 		}
 	}
-	
+
 	private String getFileName(Part part) {
         String contentDisp = part.getHeader("content-disposition");
         String[] tokens = contentDisp.split(";");
@@ -142,15 +143,17 @@ public class GameService {
         }
         return "";
     }
-	
+
 	private String generateFileName(String actualFileName) {
-		if(actualFileName.isEmpty()) return "";
-		
+		if(actualFileName.isEmpty()) {
+			return "";
+		}
+
 		String[] values = actualFileName.split("\\.");
 		String ext = values[1];
-		
+
 		Long instant = System.currentTimeMillis();
-		
+
 		return String.format("%s.%s",instant, ext);
 	}
 

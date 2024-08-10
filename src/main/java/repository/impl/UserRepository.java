@@ -72,9 +72,9 @@ public class UserRepository implements IRepository<User, Long> {
 		Collection<User> users = findAll();
         fileManagement.clear(userFileName);
         users.removeIf(user -> user.getId().equals(identifier));
-        saveAll(users);
+        users.forEach( user -> fileManagement.write(new UserDto(user.getId(), user.getName(), user.getEmail(), user.getPassword(), user.getType()), userFileName) );
 	}
-	
+
 	public User findByEmail(String email) {
 		Collection<User> users = findAll();
         for (User user : users) {

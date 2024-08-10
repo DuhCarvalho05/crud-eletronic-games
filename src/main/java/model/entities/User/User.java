@@ -27,11 +27,11 @@ public class User {
 		setPassword(password);
 		this.type = type;
 	}
-	
+
 	public static boolean autenticate(User onSystem, String password){
         return onSystem.password.equals(onSystem.encryptPassword(password));
     }
-	
+
 	protected String encryptPassword(String passwd){
         StringBuilder sb = new StringBuilder();
         try {
@@ -86,7 +86,7 @@ public class User {
 	public void setType(UserType type) {
 		this.type = type;
 	}
-	
-	
+
+
 
 }
