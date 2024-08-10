@@ -19,11 +19,11 @@ public class FileManagement {
     	this.rootPath = String.format("%sUsers/%s/csv/", root, username);
 
     	File folder = new File(rootPath);
-    	
-    	if(!folder.exists()) {    		
+
+    	if(!folder.exists()) {
     		folder.mkdir();
     	}
-    	
+
     }
 
     public void write(Writable<?> w, String filename){

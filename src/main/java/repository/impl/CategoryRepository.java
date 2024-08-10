@@ -70,9 +70,10 @@ public class CategoryRepository implements IRepository<Category, Long> {
 	@Override
 	public void deleteById(Long identifier) {
 		Collection<Category> categories = findAll();
+
 		fileManagement.clear(categoryFileName);
 		categories.removeIf( category -> category.getId().equals(identifier) );
-		saveAll(categories);
+		categories.forEach( category -> fileManagement.write(new CategoryDto(category.getId(), category.getName()), categoryFileName) );
 	}
 
 	private Category generate(CategoryDto categoryDto) {

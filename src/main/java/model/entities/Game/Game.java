@@ -31,7 +31,7 @@ public class Game {
 		this.requirement = requirement;
 		this.platform = platform;
 	}
-	
+
 	public Long getId() {
 		return id;
 	}

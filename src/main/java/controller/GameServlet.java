@@ -54,7 +54,7 @@ public class GameServlet extends HttpServlet {
 		gameService.remove(request, response);
 	}
 
-	
+
 
 
 }
