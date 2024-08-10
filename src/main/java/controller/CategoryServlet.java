@@ -36,25 +36,6 @@ public class CategoryServlet extends HttpServlet {
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String name = request.getParameter("name");
-
-		PrintWriter pw = response.getWriter();
-
-		if(name.isEmpty()) {
-			pw.write("FIELDS CANT BE EMPTY");
-		}else {
-			Category category = new Category();
-			category.setName(name);
-			categoryRepository.save(category);
-			pw.write("CREATED");
-		}
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String id = request.getParameter("categoryId");
 
 		PrintWriter pw = response.getWriter();
@@ -69,6 +50,25 @@ public class CategoryServlet extends HttpServlet {
 			}else {
 				pw.write(category.toString());
 			}
+		}
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String name = request.getParameter("name");
+
+		PrintWriter pw = response.getWriter();
+
+		if(name.isEmpty()) {
+			pw.write("FIELDS CANT BE EMPTY");
+		}else {
+			Category category = new Category();
+			category.setName(name);
+			categoryRepository.save(category);
+			pw.write("CREATED");
 		}
 	}
 

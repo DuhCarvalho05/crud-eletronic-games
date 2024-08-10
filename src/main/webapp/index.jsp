@@ -8,5 +8,9 @@
 </head>
 <body>
 
+	Sobre o projeto
+	
+	<a href="${pageContext.request.contextPath}/home"> Navegar pelo projeto </a>
+
 </body>
 </html>
