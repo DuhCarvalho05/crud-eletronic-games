@@ -1,6 +1,8 @@
 package controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Collection;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -8,7 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import model.services.CategoryService;
+import model.entities.Category.Category;
+import repository.impl.CategoryRepository;
 
 /**
  * Servlet implementation class CategoryServlet
@@ -18,14 +21,14 @@ public class CategoryServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 
-	private final CategoryService categoryService;
+	private final CategoryRepository categoryRepository;
 
 	/**
      * @see HttpServlet#HttpServlet()
      */
     public CategoryServlet() {
         super();
-        this.categoryService = new CategoryService();
+        this.categoryRepository = new CategoryRepository();
     }
 
 	/**
@@ -33,7 +36,18 @@ public class CategoryServlet extends HttpServlet {
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		categoryService.register(request, response);
+		String name = request.getParameter("name");
+
+		PrintWriter pw = response.getWriter();
+
+		if(name.isEmpty()) {
+			pw.write("FIELDS CANT BE EMPTY");
+		}else {
+			Category category = new Category();
+			category.setName(name);
+			categoryRepository.save(category);
+			pw.write("CREATED");
+		}
 	}
 
 	/**
@@ -41,12 +55,34 @@ public class CategoryServlet extends HttpServlet {
 	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		categoryService.retrieve(request, response);
+		String id = request.getParameter("categoryId");
+
+		PrintWriter pw = response.getWriter();
+
+		if(id == null || id.isEmpty()) {
+			Collection<Category> categories = categoryRepository.findAll();
+			categories.forEach( category -> pw.write(category.toString() + "\n") );
+		}else {
+			Category category = categoryRepository.findById(Long.parseLong(id));
+			if(category == null) {
+				pw.write("NO CONTENT");
+			}else {
+				pw.write(category.toString());
+			}
+		}
 	}
 
 	@Override
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		categoryService.remove(request, response);
+		String id = request.getParameter("categoryId");
+
+		PrintWriter pw = response.getWriter();
+
+		if(id == null || id.isEmpty()){
+			pw.write("ID CANT BE EMPTY");
+		}else {
+			categoryRepository.deleteById(Long.parseLong(id));
+		}
 	}
 
 
