@@ -1,5 +1,9 @@
 package controller;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
@@ -8,7 +12,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import model.services.ImageService;
 
 /**
  * Servlet implementation class ImageServlet
@@ -17,14 +20,13 @@ import model.services.ImageService;
 public class ImageServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	private final ImageService imageService;
+	private final String uploadPath = "/Users/caiolopes/images/";
 
     /**
      * @see HttpServlet#HttpServlet()
      */
     public ImageServlet() {
         super();
-        this.imageService = new ImageService();
     }
 
 	/**
@@ -32,7 +34,46 @@ public class ImageServlet extends HttpServlet {
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		imageService.retrieve(request, response);
+		String url = "#";
+		FileInputStream fis = null;
+		BufferedInputStream bis = null;
+		BufferedOutputStream output = null;
+
+		File uploadDir = new File(uploadPath);
+
+		if (!uploadDir.exists()) {
+			uploadDir.mkdir();
+		}
+
+		try{
+			 String fileName = request.getPathInfo().substring(1);
+	         fis = new FileInputStream(new File(uploadPath+fileName));
+	         bis = new BufferedInputStream(fis);
+	         response.setContentType("image/jpeg");
+	         output = new BufferedOutputStream(response.getOutputStream());
+	         for (int data; (data = bis.read()) > -1;) {
+	           output.write(data);
+	         }
+	      }
+	      catch(IOException e){
+	    	  e.printStackTrace();
+	      }finally{
+	    	  try {
+	    		  if(fis != null) {
+					fis.close();
+				}
+		    	  if(bis != null) {
+					bis.close();
+				}
+		    	  if(output != null) {
+					output.close();
+				}
+	    	  }catch(IOException e) {
+	    		  e.printStackTrace();
+	    	  }
+	      }
+		
+		getServletContext().getRequestDispatcher(url).forward(request, response);
 	}
 
 }
