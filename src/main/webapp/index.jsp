@@ -11,5 +11,6 @@
 </head>
 <body>
 	<span>Index page</span>
+	<img alt="" src="${pageContext.request.contextPath}/image/{imageName}">
 </body>
 </html>

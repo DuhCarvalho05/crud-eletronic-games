@@ -10,41 +10,28 @@ public class Game {
 
 	private Long id;
 	private String title;
+	private String imageName;
 	private String publisher;
 	private LocalDateTime release;
 	private String synopsis;
 	private Category category;
 	private Map<String, String> requirement;
 	private Collection<String> platform;
-//	private Collection<Image> image;
 
 	public Game() {}
 
-	public Game(Long id, String title, String publisher, LocalDateTime release, String synopsis, Category category, Map<String, String> requirement, Collection<String> platform) {
+	public Game(Long id, String title, String imageName, String publisher, LocalDateTime release, String synopsis, Category category, Map<String, String> requirement, Collection<String> platform) {
 		this.id = id;
 		this.title = title;
+		this.imageName = imageName;
 		this.publisher = publisher;
 		this.release = release;
 		this.synopsis = synopsis;
 		this.category = category;
 		this.requirement = requirement;
 		this.platform = platform;
-//		this.image = image;
 	}
-
-	public Game(Long id, String title, String publisher, LocalDateTime release, String synopsis, Category category,
-			Map<String, String> requirement, Collection<String> platform, Collection<Image> image) {
-		this.id = id;
-		this.title = title;
-		this.publisher = publisher;
-		this.release = release;
-		this.synopsis = synopsis;
-//		this.category = category;
-//		this.requirement = requirement;
-//		this.platform = platform;
-//		this.image = image;
-	}
-
+	
 	public Long getId() {
 		return id;
 	}
@@ -55,6 +42,14 @@ public class Game {
 
 	public String getTitle() {
 		return title;
+	}
+
+	public String getImageName() {
+		return imageName;
+	}
+
+	public void setImageName(String imageName) {
+		this.imageName = imageName;
 	}
 
 	public void setTitle(String title) {
@@ -108,13 +103,5 @@ public class Game {
 	public void setPlatform(Collection<String> platform) {
 		this.platform = platform;
 	}
-//
-//	public Collection<Image> getImage() {
-//		return image;
-//	}
-//
-//	public void setImage(Collection<Image> image) {
-//		this.image = image;
-//	}
 
 }

@@ -1,8 +1,8 @@
 package model.dto.Category;
 
-import fileSystem.ObjectConvert;
+import fileSystem.Writable;
 
-public class CategoryDto implements ObjectConvert<CategoryDto> {
+public class CategoryDto implements Writable<CategoryDto> {
 
 	private Long id;
 	private String name;

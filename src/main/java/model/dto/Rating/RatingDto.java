@@ -2,9 +2,9 @@ package model.dto.Rating;
 
 import java.time.LocalDateTime;
 
-import fileSystem.ObjectConvert;
+import fileSystem.Writable;
 
-public class RatingDto implements ObjectConvert<RatingDto> {
+public class RatingDto implements Writable<RatingDto> {
 
 	private Long id;
 	private String description;

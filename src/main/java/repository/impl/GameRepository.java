@@ -21,9 +21,9 @@ public class GameRepository implements IRepository<Game, Long> {
 
 	private static Long SEQUENCE = 0L;
 
-	private String gameFileName = "game.csv";
-	private String requirementFileName = "requirement.csv";
-	private String platformFileName = "platform.csv";
+	private final String gameFileName = "game.csv";
+	private final String requirementFileName = "requirement.csv";
+	private final String platformFileName = "platform.csv";
 
 	private final FileManagement fileManagement;
     private final FileInterpreter fileInterpreter;
@@ -55,7 +55,7 @@ public class GameRepository implements IRepository<Game, Long> {
 
 		deleteById(game.getId());
 
-		GameDto gameDto = new GameDto(game.getId(), game.getTitle(), game.getPublisher(), game.getRelease(), game.getSynopsis(), game.getCategory().getId());
+		GameDto gameDto = new GameDto(game.getId(), game.getTitle(), game.getImageName(), game.getPublisher(), game.getRelease(), game.getSynopsis(), game.getCategory().getId());
 
 		for(Map.Entry<String, String> entry : game.getRequirement().entrySet()) {
 			RequirementDto requirementDto = new RequirementDto(entry.getKey(), entry.getValue(), game.getId());
@@ -92,15 +92,11 @@ public class GameRepository implements IRepository<Game, Long> {
 	@Override
 	public Collection<Game> findAll() {
 		Collection<GameDto> gamesDto = gameFileConverter.all(fileInterpreter.interpret(fileManagement.read(gameFileName), GameDto.class));
-
 		Collection<RequirementDto> requirementsDto = requirementFileConverter.all(fileInterpreter.interpret(fileManagement.read(requirementFileName), RequirementDto.class));
-
 		Collection<PlatformDto> platformsDto = platformFileConverter.all(fileInterpreter.interpret(fileManagement.read(platformFileName), PlatformDto.class));
 
 		Collection<Game> games = new ArrayList<>();
-
 		gamesDto.forEach( dto -> games.add(this.generate(dto, requirementsDto, platformsDto)) );
-
 		return games;
 	}
 
@@ -117,8 +113,9 @@ public class GameRepository implements IRepository<Game, Long> {
 		platformsDto.removeIf( plat -> plat.getGameId().equals(identifier) );
 		requirementsDto.removeIf( req -> req.getGameId().equals(identifier) );
         games.removeIf( game -> game.getId().equals(identifier) );
+        
 
-        games.forEach( game -> fileManagement.write(new GameDto(game.getId(), game.getTitle(), game.getPublisher(), game.getRelease(), game.getSynopsis(), game.getCategory().getId()), gameFileName));
+        games.forEach( game -> fileManagement.write(new GameDto(game.getId(), game.getTitle(), game.getImageName(), game.getPublisher(), game.getRelease(), game.getSynopsis(), game.getCategory().getId()), gameFileName));
         requirementsDto.forEach(req -> fileManagement.write(req, requirementFileName));
         platformsDto.forEach( plat -> fileManagement.write(plat, platformFileName));
 	}
@@ -140,7 +137,7 @@ public class GameRepository implements IRepository<Game, Long> {
 			}
 		}
 
-		return new Game(gameDto.getId(), gameDto.getTitle(), gameDto.getPublisher(), gameDto.getRelease(), gameDto.getSynopsis(), category, requirement, platform);
+		return new Game(gameDto.getId(), gameDto.getTitle(), gameDto.getImageName(), gameDto.getPublisher(), gameDto.getRelease(), gameDto.getSynopsis(), category, requirement, platform);
 	}
 
 }

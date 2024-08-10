@@ -1,9 +1,9 @@
 package model.dto.User;
 
-import fileSystem.ObjectConvert;
+import fileSystem.Writable;
 import model.entities.User.UserType;
 
-public class UserDto implements ObjectConvert<UserDto> {
+public class UserDto implements Writable<UserDto> {
 
 	private Long id;
 	private String name;

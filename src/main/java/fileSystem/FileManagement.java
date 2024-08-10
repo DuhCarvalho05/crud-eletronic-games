@@ -20,14 +20,17 @@ public class FileManagement {
 
     	File folder = new File(rootPath);
     	
-    	folder.mkdir();
+    	if(!folder.exists()) {    		
+    		folder.mkdir();
+    	}
+    	
     }
 
-    public void write(Object o, String filename){
+    public void write(Writable<?> w, String filename){
         try {
             FileWriter fw = new FileWriter(rootPath+filename, true);
             PrintWriter pw = new PrintWriter(fw);
-            pw.println(o);
+            pw.println(w);
             pw.close();
             fw.close();
         }catch (IOException e){

@@ -1,8 +1,8 @@
 package model.dto.Game;
 
-import fileSystem.ObjectConvert;
+import fileSystem.Writable;
 
-public class PlatformDto implements ObjectConvert<PlatformDto> {
+public class PlatformDto implements Writable<PlatformDto> {
 
 	private String platform;
 	private Long gameId;

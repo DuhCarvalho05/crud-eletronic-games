@@ -1,8 +1,8 @@
 package model.dto.Game;
 
-import fileSystem.ObjectConvert;
+import fileSystem.Writable;
 
-public class RequirementDto implements ObjectConvert<RequirementDto> {
+public class RequirementDto implements Writable<RequirementDto> {
 
 	private String component;
 	private String description;
