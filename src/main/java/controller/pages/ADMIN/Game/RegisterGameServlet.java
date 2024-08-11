@@ -3,6 +3,7 @@ package controller.pages.ADMIN.Game;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -78,7 +79,8 @@ public class RegisterGameServlet extends HttpServlet {
 			Game game = new Game();
 			game.setTitle(title);
 			game.setPublisher(publisher);
-			game.setRelease(LocalDateTime.parse(release));
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+			game.setRelease(LocalDateTime.parse(release, formatter));
 			game.setSynopsis(synopsis);
 
 			Map<String, String> requirement = new HashMap<>();
