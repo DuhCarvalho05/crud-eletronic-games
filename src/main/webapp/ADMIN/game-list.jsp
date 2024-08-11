@@ -22,8 +22,7 @@
 			<tbody>
 				<c:if test="${ empty games }">
 					<tr>
-						<td class="text-center" colspan="4">Não há nenhum jogo
-							cadastrado.</td>
+						<td class="text-center" colspan="4">Não há nenhum jogo cadastrado.</td>
 					</tr>
 				</c:if>
 
