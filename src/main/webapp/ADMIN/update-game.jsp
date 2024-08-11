@@ -16,8 +16,11 @@
 					type="text" class="form-control" name="title" value="${ game.title }">
 			</div>
 			<div class="mb-3">
+			 <img class="w-15 rounded"
+									src="${pageContext.request.contextPath}/image/${game.imageName}"
+									alt="Jogo ${ game.title }" />
 				<label for="image" class="form-label">Imagem do jogo</label> <input
-					class="form-control" type="file" name="image" >
+					class="form-control" type="file" name="image">
 			</div>
 			<div class="mb-3">
 				<label for="publisher" class="form-label">Distribuidora/Desenvolvedora</label>

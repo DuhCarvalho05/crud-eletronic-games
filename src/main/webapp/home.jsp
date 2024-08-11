@@ -28,7 +28,7 @@
 					<c:if test="${ game.category.name == 'PLATAFORMA' }">
 						<div class="swiper-slide">
 							<div class="c-card d-flex rounded position-relative">
-								<a class="d-flex w-100" href="${pageContext.request.contextPath}/details/${ game.id }"> <img class="w-100 rounded"
+								<a class="d-flex w-100" href="details/${ game.id }"> <img class="w-100 rounded"
 									src="${pageContext.request.contextPath}/image/${game.imageName}"
 									alt="Jogo ${ game.title }" />
 								</a>

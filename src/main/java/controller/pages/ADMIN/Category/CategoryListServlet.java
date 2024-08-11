@@ -34,4 +34,11 @@ public class CategoryListServlet extends HttpServlet {
 		getServletContext().getRequestDispatcher("/ADMIN/category-list.jsp").forward(request, response);
 	}
 
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		doGet(req,resp);
+	}
+	
+	
+
 }

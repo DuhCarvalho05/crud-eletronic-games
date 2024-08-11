@@ -31,6 +31,23 @@
 		</c:forEach>
 	</c:if>
 	
+	<c:if test="${not empty user} ">
+		<form action="${pageContext.request.contextPath}/register-rating" method="POST">
+		<input type="hidden" class="form-control" name="gameId" value="${ game.id }">
+		<input type="hidden" class="form-control" name="userId" value="${ user.id }">
+		
+			<div class="mb-3">
+				<label for="name" class="form-label">Nota</label>
+		    	<input type="number" class="form-control" name="stars" />
+			</div>			
+		  	<div class="mb-3">
+		    	<label for="name" class="form-label">Descrição</label>
+		    	<textarea class="form-control"	 name="description" rows="4" cols="50"></textarea>
+		  	</div>
+		  	<button type="submit" class="btn btn-primary">Enviar</button>
+		</form>
+	</c:if>
+	
 	<c:if test="${ not empty ratings }">
 		<h3>Avaliações</h3>
 		<c:forEach var="rating" items="${ ratings }">

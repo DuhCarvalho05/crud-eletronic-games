@@ -42,7 +42,7 @@ public class RegisterCategoryServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String name = request.getParameter("name");
 
-		String url = "/ADMIN/category-list.jsp";
+		String url = "/category-list";
 		String msg = "error";
 		
 		if(!name.isEmpty()) {

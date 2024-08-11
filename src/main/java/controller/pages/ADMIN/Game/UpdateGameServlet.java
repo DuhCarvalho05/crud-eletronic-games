@@ -141,7 +141,6 @@ public class UpdateGameServlet extends HttpServlet {
 				gameRepository.save(game);
 			}
 			url = "/game-list";
-			System.out.print(url);
 		}catch(NumberFormatException e) {
 			e.printStackTrace();
 			msg = "nan";

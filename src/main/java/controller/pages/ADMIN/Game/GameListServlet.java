@@ -38,4 +38,12 @@ public class GameListServlet extends HttpServlet {
 		getServletContext().getRequestDispatcher("/ADMIN/game-list.jsp").forward(request, response);
 	}
 
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		doGet(req,resp);
+	}
+	
+	
+	
+
 }
