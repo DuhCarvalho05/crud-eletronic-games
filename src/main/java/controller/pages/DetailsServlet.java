@@ -71,4 +71,10 @@ public class DetailsServlet extends HttpServlet {
 		getServletContext().getRequestDispatcher(url).forward(request, response);
 	}
 
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		doGet(req,resp);
+	}
+	
+
 }
