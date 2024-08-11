@@ -7,7 +7,6 @@
 <c:import url="includes/header.jsp" />
 
 <div class="container d-flex justify-content-center mt-5"> 
-	
 	<div class="w-50 p-3 bg-light">
 		<form action="${pageContext.request.contextPath}/login" method="POST">
 		  	<div class="mb-3">
