@@ -38,7 +38,6 @@ public class RegisterGameServlet extends HttpServlet {
 
 	private final GameRepository gameRepository;
 	private final CategoryRepository categoryRepository;
-	private final GameRepository gameRepository;
 
     /**
      * @see HttpServlet#HttpServlet()
