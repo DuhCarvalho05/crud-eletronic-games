@@ -1,8 +1,7 @@
-package controller;
+package controller.pages.ADMIN.Game;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -24,67 +23,43 @@ import repository.impl.GameRepository;
 import utils.PathFile;
 
 /**
- * Servlet implementation class GameServlet
+ * Servlet implementation class RegisterGameServlet
  */
-@WebServlet("/game")
+@WebServlet("/register-game/*")
 @MultipartConfig(
   fileSizeThreshold = 1024 * 1024 * 1, // 1 MB
   maxFileSize = 1024 * 1024 * 10,      // 10 MB
   maxRequestSize = 1024 * 1024 * 100   // 100 MB
 )
-public class GameServlet extends HttpServlet {
+public class RegisterGameServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	private final String uploadPath = PathFile.getInstance().getPath() + "/images/";
 
 	private final GameRepository gameRepository;
 	private final CategoryRepository categoryRepository;
+	private final GameRepository gameRepository;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public GameServlet() {
+    public RegisterGameServlet() {
         super();
+        this.categoryRepository = new CategoryRepository();
         this.gameRepository = new GameRepository();
-		this.categoryRepository = new CategoryRepository();
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String id = request.getParameter("gameId");
-
-		PrintWriter pw = response.getWriter();
-
-		if(id == null || id.isEmpty()) {
-			Collection<Game> games = gameRepository.findAll();
-			games.forEach(game -> pw.write(game.toString() + "\n"));
-		}else {
-			Game game = gameRepository.findById(Long.parseLong(id));
-			if(game == null) {
-				pw.write("NO CONTENT");
-			}else {
-				pw.write(game.getId() + "\n");
-				pw.write(game.getTitle() + "\n");
-				pw.write(game.getPublisher() + "\n");
-				pw.write(game.getRelease() + "\n");
-				pw.write(game.getSynopsis() + "\n");
-				for(Map.Entry<String, String> entry : game.getRequirement().entrySet()) {
-					pw.write(entry.getKey() + ":" + entry.getValue() + "\n");
-				}
-				for(String plat : game.getPlatform()) {
-					pw.write(plat + "\n");
-				}
-			}
-		}
+		getServletContext().setAttribute("categories", categoryRepository.findAll());
+		getServletContext().getRequestDispatcher("/ADMIN/register-game.jsp").forward(request, response);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String title = request.getParameter("title");
 		String publisher = request.getParameter("publisher");
@@ -95,10 +70,11 @@ public class GameServlet extends HttpServlet {
 		String platformNotMapped = request.getParameter("platform");
 		Part imageNotMapped = request.getPart("image");
 
-		PrintWriter pw = response.getWriter();
+		String url = "/ADMIN/game-list.jsp";
+		String msg = "error";
 
 		if(title.isEmpty() || publisher.isEmpty() || release.isEmpty() || synopsis.isEmpty() || categoryId.isEmpty() || requirementNotMapped.isEmpty() || platformNotMapped.isEmpty()) {
-			pw.write("FIELDS CAN'T BE EMPTY");
+			msg = "empty-fields";
 		}else {
 			Game game = new Game();
 			game.setTitle(title);
@@ -143,21 +119,12 @@ public class GameServlet extends HttpServlet {
 			}
 
 			gameRepository.save(game);
-			pw.write("CREATED");
+
+			msg = "CREATED";
 		}
-	}
 
-	@Override
-	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String id = request.getParameter("gameId");
-
-		PrintWriter pw = response.getWriter();
-
-		if(id == null || id.isEmpty()){
-			pw.write("ID CANT BE EMPTY");
-		}else {
-			gameRepository.deleteById(Long.parseLong(id));
-		}
+		getServletContext().setAttribute("msg", msg);
+		getServletContext().getRequestDispatcher(url).forward(request, response);
 	}
 
 	private String getFileName(Part part) {
@@ -183,6 +150,5 @@ public class GameServlet extends HttpServlet {
 
 		return String.format("%s.%s",instant, ext);
 	}
-
 
 }
