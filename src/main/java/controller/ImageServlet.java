@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import utils.PathFile;
+
 /**
  * Servlet implementation class ImageServlet
  */
@@ -19,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 public class ImageServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	private final String uploadPath = "/Users/caiolopes/images/";
+	private final String uploadPath = PathFile.getInstance().getPath() + "/images/";
 
     /**
      * @see HttpServlet#HttpServlet()

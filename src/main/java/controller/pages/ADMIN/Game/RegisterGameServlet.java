@@ -20,6 +20,7 @@ import model.entities.Category.Category;
 import model.entities.Game.Game;
 import repository.impl.CategoryRepository;
 import repository.impl.GameRepository;
+import utils.PathFile;
 
 /**
  * Servlet implementation class RegisterGameServlet
@@ -32,12 +33,13 @@ import repository.impl.GameRepository;
 )
 public class RegisterGameServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
-	private final String uploadPath = "/Users/caiolopes/images/";
-       
+
+	private final String uploadPath = PathFile.getInstance().getPath() + "/images/";
+
+	private final GameRepository gameRepository;
 	private final CategoryRepository categoryRepository;
 	private final GameRepository gameRepository;
-	
+
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -67,7 +69,7 @@ public class RegisterGameServlet extends HttpServlet {
 		String requirementNotMapped = request.getParameter("requirement");
 		String platformNotMapped = request.getParameter("platform");
 		Part imageNotMapped = request.getPart("image");
-		
+
 		String url = "/ADMIN/game-list.jsp";
 		String msg = "error";
 
@@ -117,14 +119,14 @@ public class RegisterGameServlet extends HttpServlet {
 			}
 
 			gameRepository.save(game);
-			
+
 			msg = "CREATED";
 		}
-		
+
 		getServletContext().setAttribute("msg", msg);
 		getServletContext().getRequestDispatcher(url).forward(request, response);
 	}
-	
+
 	private String getFileName(Part part) {
         String contentDisp = part.getHeader("content-disposition");
         String[] tokens = contentDisp.split(";");
