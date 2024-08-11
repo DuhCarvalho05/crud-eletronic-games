@@ -21,6 +21,7 @@ import model.entities.Category.Category;
 import model.entities.Game.Game;
 import repository.impl.CategoryRepository;
 import repository.impl.GameRepository;
+import utils.PathFile;
 
 /**
  * Servlet implementation class GameServlet
@@ -34,7 +35,7 @@ import repository.impl.GameRepository;
 public class GameServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	private final String uploadPath = "/Users/caiolopes/images/";
+	private final String uploadPath = PathFile.getInstance().getPath() + "/images/";
 
 	private final GameRepository gameRepository;
 	private final CategoryRepository categoryRepository;

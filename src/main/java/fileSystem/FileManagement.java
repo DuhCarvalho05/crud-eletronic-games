@@ -7,23 +7,20 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import utils.PathFile;
+
 public class FileManagement {
 
 	private final String rootPath;
 
     public FileManagement() {
-    	File[] rootDrive = File.listRoots();
-    	String username = System.getProperty("user.name");
-    	String root = rootDrive[0].toString();
-
-    	this.rootPath = String.format("%sUsers/%s/csv/", root, username);
+    	rootPath = PathFile.getInstance().getPath() + "/csv/";
 
     	File folder = new File(rootPath);
 
     	if(!folder.exists()) {
     		folder.mkdir();
     	}
-
     }
 
     public void write(Writable<?> w, String filename){
