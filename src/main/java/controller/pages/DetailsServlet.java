@@ -21,11 +21,11 @@ import repository.impl.RatingRepository;
 @WebServlet("/details/*")
 public class DetailsServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+
 	private final CategoryRepository categoryRepository;
 	private final GameRepository gameRepository;
 	private final RatingRepository ratingRepository;
-	
+
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -39,36 +39,43 @@ public class DetailsServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		getServletContext().setAttribute("categories", categoryRepository.findAll());
-		
+
 		String gameId = "";
-		
+
 		if(request.getPathInfo() != null && !request.getPathInfo().isEmpty()) {
 			gameId = request.getPathInfo().substring(1);
 		}
-		
-		String url = "/home";
+
+		String url = "/";
 		String msg = "not-found";
-		
+
 		try {
 			Long id = Long.parseLong(gameId);
 			Game game = gameRepository.findById(id);
-			
+
 			if(game != null) {
 				Collection<Rating> ratings = ratingRepository.findByGameId(id);
-				
+
 				getServletContext().setAttribute("game", game);
 				getServletContext().setAttribute("ratings", ratings);
 				url = "/details.jsp";
 			}
-			
+
 		}catch(NumberFormatException e) {
 			msg = "nan";
 		}
-		
+
 		getServletContext().setAttribute("msg", msg);
 		getServletContext().getRequestDispatcher(url).forward(request, response);
 	}
+
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		doGet(req,resp);
+	}
+
 
 }

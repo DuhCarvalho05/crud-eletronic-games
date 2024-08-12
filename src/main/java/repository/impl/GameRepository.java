@@ -10,20 +10,23 @@ import fileSystem.FileManagement;
 import infra.Game.GameFileConverter;
 import infra.Game.PlatformFileConverter;
 import infra.Game.RequirementFileConverter;
+import infra.Rating.RatingFileConverter;
 import model.dto.Game.GameDto;
 import model.dto.Game.PlatformDto;
 import model.dto.Game.RequirementDto;
+import model.dto.Rating.RatingDto;
 import model.entities.Category.Category;
 import model.entities.Game.Game;
 import repository.IRepository;
 
 public class GameRepository implements IRepository<Game, Long> {
 
-	private static Long SEQUENCE = 0L;
+	private  Long SEQUENCE = 0L;
 
 	private final String gameFileName = "game.csv";
 	private final String requirementFileName = "requirement.csv";
 	private final String platformFileName = "platform.csv";
+	private final String ratingFileName = "rating.csv";
 
 	private final FileManagement fileManagement;
     private final FileInterpreter fileInterpreter;
@@ -33,8 +36,10 @@ public class GameRepository implements IRepository<Game, Long> {
 
     private final RequirementFileConverter requirementFileConverter;
     private final PlatformFileConverter platformFileConverter;
+    private final RatingFileConverter ratingFileConverter;
 
     public GameRepository() {
+    		
     	this.fileManagement = new FileManagement();
         this.fileInterpreter = new FileInterpreter();
 
@@ -44,6 +49,22 @@ public class GameRepository implements IRepository<Game, Long> {
 
         this.requirementFileConverter = new RequirementFileConverter();
         this.platformFileConverter = new PlatformFileConverter();
+        
+        this.ratingFileConverter = new RatingFileConverter();
+        
+
+    	Collection<Game> games = findAll();
+    	if(!games.isEmpty()) {
+    		var aux = 0L;
+    		for(Game g : games) {
+    			if (aux < g.getId()) {
+    				aux = g.getId();
+    			}
+    		}
+    		SEQUENCE = aux;    		
+    	}
+    		
+        
 
     }
 
@@ -105,19 +126,23 @@ public class GameRepository implements IRepository<Game, Long> {
 		Collection<Game> games = findAll();
 		Collection<RequirementDto> requirementsDto = requirementFileConverter.all(fileInterpreter.interpret(fileManagement.read(requirementFileName), RequirementDto.class));
 		Collection<PlatformDto> platformsDto = platformFileConverter.all(fileInterpreter.interpret(fileManagement.read(platformFileName), PlatformDto.class));
+		Collection<RatingDto> ratingsDto = ratingFileConverter.all(fileInterpreter.interpret(fileManagement.read(ratingFileName), RatingDto.class));
 
         fileManagement.clear(gameFileName);
         fileManagement.clear(requirementFileName);
         fileManagement.clear(platformFileName);
+        fileManagement.clear(ratingFileName);
 
 		platformsDto.removeIf( plat -> plat.getGameId().equals(identifier) );
 		requirementsDto.removeIf( req -> req.getGameId().equals(identifier) );
+		ratingsDto.removeIf(rat -> rat.getGameId().equals(identifier) );
         games.removeIf( game -> game.getId().equals(identifier) );
 
 
         games.forEach( game -> fileManagement.write(new GameDto(game.getId(), game.getTitle(), game.getImageName(), game.getPublisher(), game.getRelease(), game.getSynopsis(), game.getCategory().getId()), gameFileName));
         requirementsDto.forEach(req -> fileManagement.write(req, requirementFileName));
         platformsDto.forEach( plat -> fileManagement.write(plat, platformFileName));
+        ratingsDto.forEach(rat -> fileManagement.write(rat, ratingFileName));
 	}
 
 	public Collection<Game> searchByTitle(String title){

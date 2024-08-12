@@ -23,11 +23,11 @@ import repository.impl.UserRepository;
 @WebServlet("/register-rating")
 public class RegisterRatingServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
+
 	private final RatingRepository ratingRepository;
 	private final UserRepository userRepository;
 	private final GameRepository gameRepository;
-       
+
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -41,6 +41,7 @@ public class RegisterRatingServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
@@ -49,22 +50,23 @@ public class RegisterRatingServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String description = request.getParameter("description");
 		String stars = request.getParameter("stars");
-		String createdAt = request.getParameter("createdAt");
 		String userId = request.getParameter("userId");
 		String gameId = request.getParameter("gameId");
+		String url = "/";
 
 		PrintWriter pw = response.getWriter();
 
-		if(description.isEmpty() || stars.isEmpty() || createdAt.isEmpty() || userId.isEmpty() || gameId.isEmpty()) {
+		if(description.isEmpty() || stars.isEmpty() || userId.isEmpty() || gameId.isEmpty()) {
 			pw.write("FIELDS CANT BE EMPTY");
 		}else {
 			Rating rating = new Rating();
 			rating.setDescription(description);
 			rating.setStars(Integer.parseInt(stars));
-			rating.setCreatedAt(LocalDateTime.parse(createdAt));
+			rating.setCreatedAt(LocalDateTime.now());
 
 			User user = userRepository.findById(Long.parseLong(userId));
 			if(user != null) {
@@ -73,12 +75,13 @@ public class RegisterRatingServlet extends HttpServlet {
 
 			Game game = gameRepository.findById(Long.parseLong(gameId));
 			if(game != null) {
+				url = "/details/"+gameId;
 				rating.setGame(game);
 			}
 
 			ratingRepository.save(rating);
-			pw.write("CREATED");
 		}
+		getServletContext().getRequestDispatcher(url).forward(request, response);
 	}
 
 }

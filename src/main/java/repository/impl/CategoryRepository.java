@@ -8,6 +8,7 @@ import fileSystem.FileManagement;
 import infra.Category.CategoryFileConverter;
 import model.dto.Category.CategoryDto;
 import model.entities.Category.Category;
+import model.entities.Rating.Rating;
 import repository.IRepository;
 
 public class CategoryRepository implements IRepository<Category, Long> {
@@ -24,6 +25,17 @@ public class CategoryRepository implements IRepository<Category, Long> {
 		this.fileManagement = new FileManagement();
 		this.fileInterpreter = new FileInterpreter();
 		this.categoryFileConverter =  new CategoryFileConverter();
+		
+		Collection<Category> categorys = findAll();
+    	if(!categorys.isEmpty()) {
+    		var aux = 0L;
+    		for(Category g : categorys) {
+    			if (aux < g.getId()) {
+    				aux = g.getId();
+    			}
+    		}
+    		SEQUENCE = aux;    		
+    	}
 	}
 
 	@Override
@@ -75,16 +87,16 @@ public class CategoryRepository implements IRepository<Category, Long> {
 		categories.removeIf( category -> category.getId().equals(identifier) );
 		categories.forEach( category -> fileManagement.write(new CategoryDto(category.getId(), category.getName()), categoryFileName) );
 	}
-	
+
 	public Category findByName(String name) {
 		Collection<Category> categories = findAll();
-		
+
 		for(Category category : categories) {
 			if(category.getName().equalsIgnoreCase(name)){
 				return category;
 			}
 		}
-		
+
 		return null;
 	}
 

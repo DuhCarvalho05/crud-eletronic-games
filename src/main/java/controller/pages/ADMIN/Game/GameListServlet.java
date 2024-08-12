@@ -1,6 +1,7 @@
 package controller.pages.ADMIN.Game;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,10 +17,10 @@ import repository.impl.GameRepository;
 @WebServlet("/game-list")
 public class GameListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+
 	private final CategoryRepository categoryRepository;
 	private final GameRepository gameRepository;
-	
+
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -32,6 +33,7 @@ public class GameListServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		getServletContext().setAttribute("categories", categoryRepository.findAll());
 		getServletContext().setAttribute("games", gameRepository.findAll());
@@ -42,8 +44,8 @@ public class GameListServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		doGet(req,resp);
 	}
-	
-	
-	
+
+
+
 
 }

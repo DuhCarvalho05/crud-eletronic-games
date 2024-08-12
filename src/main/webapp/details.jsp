@@ -30,8 +30,7 @@
 		  Plataforma: <c:out value="${platform}" />
 		</c:forEach>
 	</c:if>
-	
-	<c:if test="${not empty user} ">
+	<c:if test="${ not empty user }">
 		<form action="${pageContext.request.contextPath}/register-rating" method="POST">
 		<input type="hidden" class="form-control" name="gameId" value="${ game.id }">
 		<input type="hidden" class="form-control" name="userId" value="${ user.id }">

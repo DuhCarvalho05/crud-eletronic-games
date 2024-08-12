@@ -36,23 +36,24 @@ public class SearchServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		getServletContext().setAttribute("categories", categoryRepository.findAll());
-		
+
 		String query = request.getParameter("q");
 
-		String url = "/home";
+		String url = "/";
 		String msg = "not-found";
-		
+
 		getServletContext().setAttribute("query", query);
-		
+
 		if(query != null && !query.isEmpty()) {
 			Collection<Game> gamesOfThisSearch = gameRepository.searchByTitle(query);
 			getServletContext().setAttribute("games", gamesOfThisSearch);
 			url = "/search.jsp";
 		}
-		
+
 		getServletContext().setAttribute("msg", msg);
 		getServletContext().getRequestDispatcher(url).forward(request, response);
 	}

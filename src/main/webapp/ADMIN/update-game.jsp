@@ -10,49 +10,78 @@
 	<c:redirect url="/login.jsp"></c:redirect>
 </c:if>
 
-<form action="${pageContext.request.contextPath}/update-game"
+<div class="container d-flex justify-content-center mt-5">
 
+	<div class="w-50 p-3">
+		<span class="fw-bold fs-4 text-center">Atualizar Jogo</span>
+		<form action="${pageContext.request.contextPath}/update-game"
 			method="POST" enctype="multipart/form-data">
+			<input type="hidden" name="id" value="${ game.id }" />
 			<div class="mb-3">
-			<input type="hidden" class="form-control" name="id" value="${ game.id }">
-			
 				<label for="name" class="form-label">Titulo Jogo</label> <input
-					type="text" class="form-control" name="title" value="${ game.title }">
+					style="background: #000; border-color: #27272a; color: #fafafa; font-size: 14px;"
+					type="text" class="form-control me-2 input" name="title"
+					value="${ game.title }">
 			</div>
 			<div class="mb-3">
-			 <img class="w-15 rounded"
-									src="${pageContext.request.contextPath}/image/${game.imageName}"
-									alt="Jogo ${ game.title }" />
 				<label for="image" class="form-label">Imagem do jogo</label> <input
-					class="form-control" type="file" name="image">
+					style="background: #000; border-color: #27272a; color: #fafafa; font-size: 14px;"
+					class="form-control input" type="file" name="image">
 			</div>
 			<div class="mb-3">
 				<label for="publisher" class="form-label">Distribuidora/Desenvolvedora</label>
-				<input type="text" class="form-control" name="publisher" value="${ game.publisher }">
+				<input
+					style="background: #000; border-color: #27272a; color: #fafafa; font-size: 14px;"
+					type="text" class="form-control input" name="publisher"
+					value="${ game.publisher }">
 			</div>
 			<div class="mb-3">
 				<label for="release" class="form-label">Lançamento</label> <input
-					type="text" class="form-control" name="release" value="${ game.release }">
+					style="background: #000; border-color: #27272a; color: #fafafa; font-size: 14px;"
+					type="text" class="form-control input" name="release"
+					value="${ game.release }">
 			</div>
 			<div class="mb-3">
 				<label for="synopsis" class="form-label">Sinopse</label> <input
-					type="text" class="form-control" name="synopsis" value="${ game.synopsis }">
+					style="background: #000; border-color: #27272a; color: #fafafa; font-size: 14px;"
+					type="text" class="form-control input" name="synopsis"
+					value="${ game.synopsis }">
 			</div>
 			<div class="mb-3">
 				<label for="categoryId" class="form-label">Categoria</label> <input
-					type="text" class="form-control" name="categoryId" value="${ game.category.id }">
+					style="background: #000; border-color: #27272a; color: #fafafa; font-size: 14px;"
+					type="text" class="form-control input" name="categoryId"
+					value="${ game.category.id }">
 			</div>
 			<div class="mb-3">
 				<label for="requirement" class="form-label">Requerimentos do
-					sistema</label> <input type="text" class="form-control" name="requirement" value="${ game.requirement }">
+					sistema</label>
+				<textarea
+					style="background: #000; border-color: #27272a; color: #fafafa; font-size: 14px;"
+					class="form-control input" name="requirement" rows="5" cols="20"
+					placeholder="Componente;Valor (Enter para ir para proxima linha)"><c:forEach
+						var="entry" items="${ game.requirement }">${entry.key};${entry.value}
+</c:forEach></textarea>
 			</div>
 			<div class="mb-3">
 				<label for="platform" class="form-label">Plataformas
-					suportadas</label> <input type="text" class="form-control" name="platform" value="${ game.platform }">
+					suportadas</label> <textarea
+					style="background: #000; border-color: #27272a; color: #fafafa; font-size: 14px;"
+					class="form-control input" name="platform" rows="5" cols="20"
+					placeholder="Nintendo;Xbox;PC"><c:forEach
+						var="entry" items="${ game.platform }">${entry};</c:forEach></textarea>
 			</div>
-			<button type="submit" class="btn btn-primary">Atualizar
-				Jogo</button>
-</form>
+			
+			<div class="d-flex gap-3 justify-content-end">
+				<a class="btn btn-secondary btn-sm"
+					href="${pageContext.request.contextPath}/game-list">Cancelar</a>
+				<button type="submit" class="btn btn-light btn-sm">Atualizar
+					Jogo</button>
+			</div>
+		</form>
+	</div>
+
+</div>
 
 
 <c:import url="../includes/footer.jsp" />

@@ -1,6 +1,7 @@
-package controller.pages.ADMIN.Category;
+	package controller.pages.ADMIN.Category;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -31,6 +32,7 @@ public class DeleteCategoryServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		doPost(request, response);
@@ -40,6 +42,7 @@ public class DeleteCategoryServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String categoryId = "";
@@ -48,7 +51,7 @@ public class DeleteCategoryServlet extends HttpServlet {
 			categoryId = request.getPathInfo().substring(1);
 		}
 
-		String url = "/ADMIN/category-list.jsp";
+		String url = "/update-category";
 		String msg = "error";
 
 		try {
