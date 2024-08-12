@@ -72,7 +72,7 @@ public class RegisterGameServlet extends HttpServlet {
 		String platformNotMapped = request.getParameter("platform");
 		Part imageNotMapped = request.getPart("image");
 
-		String url = "/ADMIN/game-list.jsp";
+		String url = "/game-list";
 		String msg = "error";
 
 		if(title.isEmpty() || publisher.isEmpty() || release.isEmpty() || synopsis.isEmpty() || categoryId.isEmpty() || requirementNotMapped.isEmpty() || platformNotMapped.isEmpty()) {
