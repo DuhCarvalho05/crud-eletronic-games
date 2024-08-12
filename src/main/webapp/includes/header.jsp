@@ -10,6 +10,9 @@
 	color: #96969e!important;
 	font-size: 14px
 }
+img{
+	object-fit: cover;
+}
 /* .nav-glass{
 	box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1)!important;
 	backdrop-filter: blur(5.5px)!important;

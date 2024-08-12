@@ -79,7 +79,7 @@
 										<c:if test="${ game.category.id == category.id }">
 											<div class="swiper-slide">
 												<div style="border: 1px solid #27272a;" class="c-card d-flex rounded position-relative">
-													<a class="d-flex w-100 p-2" href="details/${ game.id }"> 
+													<a class="d-flex w-100" href="details/${ game.id }"> 
 													<img
 														style="opacity: 0.8;"
 														class="w-100 rounded"

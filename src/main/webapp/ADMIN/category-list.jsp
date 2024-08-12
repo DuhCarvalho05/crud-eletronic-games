@@ -14,12 +14,14 @@
 
 	<div>
 		<c:if test="${not empty msg}">
-			<div class="alert alert-danger alert-dismissible fade show"
-				role="alert">
-				<p> Para excluir uma categoria deve-se remover todos os jogos atrelados à ela
-				<button type="button" class="btn-close" data-bs-dismiss="alert"
-					aria-label="Close"></button>
-			</div>
+			<c:if test="${ msg == 'error' }">
+				<div class="alert alert-danger alert-dismissible fade show"
+					role="alert">
+					<span> Não é possível excluir está categoria, existe jogos atrelados á ela.</span>
+					<button type="button" class="btn-close" data-bs-dismiss="alert"
+						aria-label="Close"></button>
+				</div>
+			</c:if>
 		</c:if>
 	</div>
 

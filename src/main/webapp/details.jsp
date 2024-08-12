@@ -17,7 +17,7 @@
 		<h3>${ game.title }</h3>
 		
 		<div class="d-flex gap-5 mb-5">
-			<img src="${pageContext.request.contextPath}/image/${game.imageName}"
+			<img style="width: 300px; height: 400px; border: 1px solid #27272a;" class="rounded" src="${pageContext.request.contextPath}/image/${game.imageName}"
 			alt="Jogo ${ game.title }" />
 			
 			<div>
