@@ -6,6 +6,10 @@
 
 <c:import url="../includes/header.jsp" />
 
+<c:if test="${ user.type != 'ADMIN' }">
+	<c:redirect url="/login.jsp"></c:redirect>
+</c:if>
+
 <style>
 .input::placeholder{
 	color: #96969e;
