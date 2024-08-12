@@ -91,8 +91,8 @@
 		</div>
 		<div style="border: 1px solid #27272a; padding: 10px" class="rounded mb-5">
 			<form action="${pageContext.request.contextPath}/register-rating" method="POST">
-			<input type="hidden" class="form-control" name="gameId" value="${ game.id }">
-			<input type="hidden" class="form-control" name="userId" value="${ user.id }">
+				<input type="hidden" class="form-control" name="gameId" value="${ game.id }">
+				<input type="hidden" class="form-control" name="userId" value="${ user.id }">
 			
 				<div class="mb-3">
 					<label for="name" class="form-label">Nota</label>

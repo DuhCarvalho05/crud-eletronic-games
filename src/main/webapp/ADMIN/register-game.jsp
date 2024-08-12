@@ -49,9 +49,13 @@
 					type="text" class="form-control input" name="synopsis">
 			</div>
 			<div class="mb-3">
-				<label for="categoryId" class="form-label">Categoria</label> <input
-					style="background: #000; border-color: #27272a; color: #fafafa; font-size: 14px;"
-					type="text" class="form-control input" name="categoryId">
+				<label for="categoryId" class="form-label">Categoria</label>
+				<select style="background: #000; border-color: #27272a; color: #fafafa; font-size: 14px;" class="form-select form-select-sm" aria-label="Small select example" name="categoryId">
+				  <option selected>Selecione uma categoria</option>
+				  <c:forEach var="category" items="${ categories }">
+				  	<option value="${ category.id }">${ category.name }</option>
+				  </c:forEach>
+				</select>
 			</div>
 			<div class="mb-3">
 				<label for="requirement" class="form-label">Requerimentos do

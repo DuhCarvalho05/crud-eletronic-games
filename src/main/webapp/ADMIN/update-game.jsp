@@ -10,6 +10,12 @@
 	<c:redirect url="/login.jsp"></c:redirect>
 </c:if>
 
+<style>
+.input::placeholder{
+	color: #96969e;
+}
+</style>
+
 <div class="container d-flex justify-content-center mt-5">
 
 	<div class="w-50 p-3">
@@ -48,10 +54,13 @@
 					value="${ game.synopsis }">
 			</div>
 			<div class="mb-3">
-				<label for="categoryId" class="form-label">Categoria</label> <input
-					style="background: #000; border-color: #27272a; color: #fafafa; font-size: 14px;"
-					type="text" class="form-control input" name="categoryId"
-					value="${ game.category.id }">
+				<label for="categoryId" class="form-label">Categoria</label>
+				<select style="background: #000; border-color: #27272a; color: #fafafa; font-size: 14px;" class="form-select form-select-sm" aria-label="Small select example" name="categoryId">
+				  <option selected value="${ game.category.id }">${ game.category.name }</option>
+				  <c:forEach var="category" items="${ categories }">
+				  	<option value="${ category.id }">${ category.name }</option>
+				  </c:forEach>
+				</select>
 			</div>
 			<div class="mb-3">
 				<label for="requirement" class="form-label">Requerimentos do
