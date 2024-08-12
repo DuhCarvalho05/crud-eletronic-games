@@ -1,6 +1,7 @@
 	package controller.pages.ADMIN.Category;
 
 import java.io.IOException;
+import java.util.Collection;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,7 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import model.entities.Category.Category;
+import model.entities.Game.Game;
 import repository.impl.CategoryRepository;
+import repository.impl.GameRepository;
 
 /**
  * Servlet implementation class DeleteCategoryServlet
@@ -19,13 +22,15 @@ public class DeleteCategoryServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	private final CategoryRepository categoryRepository;
-
+	private final GameRepository gameRepository;
+	
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
 	public DeleteCategoryServlet() {
 		super();
 		this.categoryRepository = new CategoryRepository();
+		this.gameRepository = new GameRepository();
 	}
 
 	/**
@@ -59,8 +64,16 @@ public class DeleteCategoryServlet extends HttpServlet {
 			Category category = categoryRepository.findById(id);
 
 			if (category != null) {
-				categoryRepository.deleteById(id);
-				msg = "deleted";
+				
+				Collection<Game> gamesWithThisCategory = gameRepository.findAllByCategory(id);
+				
+				if(gamesWithThisCategory.isEmpty()) {					
+					categoryRepository.deleteById(id);
+					msg = "deleted";
+				}else {
+					msg = "error";
+				}
+				
 			}
 
 		} catch (NumberFormatException e) {
