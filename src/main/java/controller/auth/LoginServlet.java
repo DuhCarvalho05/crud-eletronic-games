@@ -56,7 +56,7 @@ public class LoginServlet extends HttpServlet {
 			User user = userRepository.findByEmail(email);
 
 			if(user != null && User.autenticate(user, password)) {
-				msg = "success";
+				msg = "";
 				url = "/";
 				HttpSession session = request.getSession();
 				session.setAttribute("user", user);
