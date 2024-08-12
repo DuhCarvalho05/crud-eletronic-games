@@ -52,14 +52,14 @@ public class SingupServlet extends HttpServlet {
 		String password = request.getParameter("password");
 
 		String url = "/singup.jsp";
-		String msg = "empty-fields";
+		String msg = "Preencha todos os campos";
 
 		if(!name.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
 
 			User existentUser = userRepository.findByEmail(email);
 
 			if(existentUser != null) {
-				msg = "email-already-exist";
+				msg = "Email já cadastrado";
 			}else {
 				User user = new User(name, email, password, UserType.DEFAULT);
 				userRepository.save(user);
