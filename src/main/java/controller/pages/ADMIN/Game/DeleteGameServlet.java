@@ -1,6 +1,7 @@
 package controller.pages.ADMIN.Game;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,9 +17,9 @@ import repository.impl.GameRepository;
 @WebServlet("/delete-game/*")
 public class DeleteGameServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+
 	private final GameRepository gameRepository;
-	
+
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -30,6 +31,7 @@ public class DeleteGameServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doPost(request, response);
 	}
@@ -37,6 +39,7 @@ public class DeleteGameServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String gameId = "";
 
@@ -46,7 +49,7 @@ public class DeleteGameServlet extends HttpServlet {
 
 		String url = "/game-list";
 		String msg = "error";
-		
+
 		try {
 			Long id = Long.parseLong(gameId);
 			Game game = gameRepository.findById(id);
@@ -60,7 +63,7 @@ public class DeleteGameServlet extends HttpServlet {
 			e.printStackTrace();
 			msg = "nan";
 		}
-		
+
 		getServletContext().setAttribute("msg", msg);
 		getServletContext().getRequestDispatcher(url).forward(request, response);
 	}

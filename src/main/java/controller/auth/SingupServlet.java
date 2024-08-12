@@ -19,10 +19,10 @@ import repository.impl.UserRepository;
 @WebServlet("/singup")
 public class SingupServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+
 	private final CategoryRepository categoryRepository;
 	private final UserRepository userRepository;
-	
+
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -35,6 +35,7 @@ public class SingupServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		getServletContext().setAttribute("categories", categoryRepository.findAll());
 		getServletContext().removeAttribute("msg");
@@ -44,6 +45,7 @@ public class SingupServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String name = request.getParameter("name");
 		String email = request.getParameter("email");
@@ -53,9 +55,9 @@ public class SingupServlet extends HttpServlet {
 		String msg = "empty-fields";
 
 		if(!name.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
-			
+
 			User existentUser = userRepository.findByEmail(email);
-			
+
 			if(existentUser != null) {
 				msg = "email-already-exist";
 			}else {
@@ -63,9 +65,9 @@ public class SingupServlet extends HttpServlet {
 				userRepository.save(user);
 				msg = "success";
 				url = "/login.jsp";
-			}	
+			}
 		}
-		
+
 		getServletContext().setAttribute("msg", msg);
 		getServletContext().getRequestDispatcher(url).forward(request, response);
 	}

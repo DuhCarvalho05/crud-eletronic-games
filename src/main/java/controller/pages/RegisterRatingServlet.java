@@ -23,11 +23,11 @@ import repository.impl.UserRepository;
 @WebServlet("/register-rating")
 public class RegisterRatingServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
+
 	private final RatingRepository ratingRepository;
 	private final UserRepository userRepository;
 	private final GameRepository gameRepository;
-       
+
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -41,6 +41,7 @@ public class RegisterRatingServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
@@ -49,12 +50,13 @@ public class RegisterRatingServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String description = request.getParameter("description");
 		String stars = request.getParameter("stars");
 		String userId = request.getParameter("userId");
 		String gameId = request.getParameter("gameId");
-		String url = "/home";
+		String url = "/";
 
 		PrintWriter pw = response.getWriter();
 

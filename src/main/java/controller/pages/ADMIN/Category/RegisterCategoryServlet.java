@@ -17,9 +17,9 @@ import repository.impl.CategoryRepository;
 @WebServlet("/register-category")
 public class RegisterCategoryServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+
 	private final CategoryRepository categoryRepository;
-	
+
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -31,6 +31,7 @@ public class RegisterCategoryServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		getServletContext().setAttribute("categories", categoryRepository.findAll());
 		getServletContext().getRequestDispatcher("/ADMIN/register-category.jsp").forward(request, response);
@@ -39,21 +40,22 @@ public class RegisterCategoryServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String name = request.getParameter("name");
 
 		String url = "/category-list";
 		String msg = "error";
-		
+
 		if(!name.isEmpty()) {
 			msg = "success";
-			
+
 			Category category = new Category();
 			category.setName(name);
-			
+
 			categoryRepository.save(category);
 		}
-		
+
 		getServletContext().setAttribute("msg", msg);
 		getServletContext().getRequestDispatcher(url).forward(request, response);
 	}

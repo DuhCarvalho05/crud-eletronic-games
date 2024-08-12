@@ -6,21 +6,32 @@
 
 <c:import url="includes/header.jsp" />
 
-<div class="container d-flex justify-content-center mt-5"> 
-	<div class="w-50 p-3 bg-light">
+<style>
+.input::placeholder{
+	color: #96969e;
+}
+</style>
+
+<div style="height: calc(100dvh - 160px)" class="container position-relative"> 
+	<div style="width: 400px" class="p-3 text-center position-absolute top-50 start-50 translate-middle">
+		<span class="fw-bold fs-4 text-center">Acessar sua conta</span>
 		<form action="${pageContext.request.contextPath}/login" method="POST">
 		  	<div class="mb-3">
-		    	<label for="exampleInputEmail1" class="form-label">Email address</label>
-		    	<input type="email" class="form-control" name="email" aria-describedby="emailHelp">
+		    	<input
+					style="background: #000; border-color: #27272a; color: #fafafa; font-size: 14px;"
+					type="email" class="form-control me-2 input" name="email" placeholder="name@example.com">
 		  	</div>
 		  	<div class="mb-3">
-		    	<label for="exampleInputPassword1" class="form-label">Password</label>
-		    	<input type="password" class="form-control" name="password">
+		    	<input
+					style="background: #000; border-color: #27272a; color: #fafafa; font-size: 14px;"
+					type="password" class="form-control me-2 input" name="password" placeholder="your password">
 		  	</div>
 		  	<div class="mb-3">
-		   		<a href="${pageContext.request.contextPath}/singup">Cadastre-se</a>
+			  	<button type="submit" class="btn btn-light btn-sm w-100">Entrar</button>
+		  	</div>
+		  	<div class="mb-3">
+		   		Não possui uma conta? <a class="text-light" href="${pageContext.request.contextPath}/singup">Cadastre-se</a>
 		  	</div>	
-		  	<button type="submit" class="btn btn-primary">Entrar</button>
 		</form>
 	</div>
 </div>
