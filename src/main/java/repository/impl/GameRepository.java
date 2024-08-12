@@ -126,23 +126,23 @@ public class GameRepository implements IRepository<Game, Long> {
 		Collection<Game> games = findAll();
 		Collection<RequirementDto> requirementsDto = requirementFileConverter.all(fileInterpreter.interpret(fileManagement.read(requirementFileName), RequirementDto.class));
 		Collection<PlatformDto> platformsDto = platformFileConverter.all(fileInterpreter.interpret(fileManagement.read(platformFileName), PlatformDto.class));
-		Collection<RatingDto> ratingsDto = ratingFileConverter.all(fileInterpreter.interpret(fileManagement.read(ratingFileName), RatingDto.class));
+//		Collection<RatingDto> ratingsDto = ratingFileConverter.all(fileInterpreter.interpret(fileManagement.read(ratingFileName), RatingDto.class));
 
         fileManagement.clear(gameFileName);
         fileManagement.clear(requirementFileName);
         fileManagement.clear(platformFileName);
-        fileManagement.clear(ratingFileName);
+//        fileManagement.clear(ratingFileName);
 
 		platformsDto.removeIf( plat -> plat.getGameId().equals(identifier) );
 		requirementsDto.removeIf( req -> req.getGameId().equals(identifier) );
-		ratingsDto.removeIf(rat -> rat.getGameId().equals(identifier) );
+//		ratingsDto.removeIf(rat -> rat.getGameId().equals(identifier) );
         games.removeIf( game -> game.getId().equals(identifier) );
 
 
         games.forEach( game -> fileManagement.write(new GameDto(game.getId(), game.getTitle(), game.getImageName(), game.getPublisher(), game.getRelease(), game.getSynopsis(), game.getCategory().getId()), gameFileName));
         requirementsDto.forEach(req -> fileManagement.write(req, requirementFileName));
         platformsDto.forEach( plat -> fileManagement.write(plat, platformFileName));
-        ratingsDto.forEach(rat -> fileManagement.write(rat, ratingFileName));
+//        ratingsDto.forEach(rat -> fileManagement.write(rat, ratingFileName));
 	}
 
 	public Collection<Game> searchByTitle(String title){
