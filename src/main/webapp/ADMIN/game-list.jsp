@@ -6,6 +6,10 @@
 
 <c:import url="../includes/header.jsp" />
 
+<c:if test="${ user.type != 'ADMIN' }">
+	<c:redirect url="/login.jsp"></c:redirect>
+</c:if>
+
 <div class="container">
 
 	<a class="btn btn-primary" href="${pageContext.request.contextPath}/register-game">Cadastrar novo jogo</a>

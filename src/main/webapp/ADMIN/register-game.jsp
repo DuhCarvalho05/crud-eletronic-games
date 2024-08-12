@@ -6,6 +6,10 @@
 
 <c:import url="../includes/header.jsp" />
 
+<c:if test="${ user.type != 'ADMIN' }">
+	<c:redirect url="/login.jsp"></c:redirect>
+</c:if>
+
 <div class="container d-flex justify-content-center mt-5">
 
 	<div class="w-50 p-3 bg-light">

@@ -6,6 +6,10 @@
 
 <c:import url="../includes/header.jsp" />
 
+<c:if test="${ user.type != 'ADMIN' }">
+	<c:redirect url="/login.jsp"></c:redirect>
+</c:if>
+
 <form action="${pageContext.request.contextPath}/update-game"
 
 			method="POST" enctype="multipart/form-data">
