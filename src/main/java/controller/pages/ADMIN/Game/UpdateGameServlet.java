@@ -101,18 +101,16 @@ public class UpdateGameServlet extends HttpServlet {
 		try {
 			Long id = Long.parseLong(gameId);
 			Game game = gameRepository.findById(id);
-<<<<<<< HEAD
-			
-			
+
 			if (game != null) {
-				
+
 				if(!title.isBlank() || title != game.getTitle()) {game.setTitle(title);}
 				if(!publisher.isBlank() || publisher != game.getPublisher()) {game.setPublisher(publisher);}
 				if(release != null || !release.equals(game.getRelease())) {game.setRelease(release);}
 				if(!synopsis.isBlank()|| synopsis != game.getSynopsis()) {game.setSynopsis(synopsis);}
 				if(categoryId != null || categoryId != game.getCategory().getId()) {game.setCategory(categoryRepository.findById(categoryId));}
-				
-				
+
+
 				if(requirementNotMapped != null ) {
 					if(!requirementNotMapped.isBlank()) {
 						Map<String, String> requirement = new HashMap<>();
@@ -125,10 +123,10 @@ public class UpdateGameServlet extends HttpServlet {
 							game.setRequirement(requirement);
 						}
 					}
-					
-					
+
+
 				}
-				
+
 				if(platformNotMapped != null) {
 					if(!platformNotMapped.isBlank()) {
 						Collection<String> platform = new ArrayList<>();
@@ -140,38 +138,11 @@ public class UpdateGameServlet extends HttpServlet {
 						  game.setPlatform(platform);
 						}
 					}
-					
-				}				
-=======
 
-			if (game != null) {
-				game.setTitle(title);
-				game.setSynopsis(synopsis);
-				game.setPublisher(publisher);
-				game.setRelease(LocalDateTime.parse(release));
-				game.setCategory(categoryRepository.findById(Long.parseLong(categoryId)));
-
-				Map<String, String> requirement = new HashMap<>();
-				String[] lines = requirementNotMapped.split("\n");
-				for(String line : lines) {
-					String[] tuples = line.split(";");
-					requirement.put(tuples[0], tuples[1]);
 				}
-				game.setRequirement(requirement);
-
-
-				Collection<String> platform = new ArrayList<>();
-				String[] values = platformNotMapped.split(";");
-				for(String value : values) {
-					platform.add(value);
-				}
-				game.setPlatform(platform);
-
-
->>>>>>> ft/Styling
 				File uploadDir = new File(uploadPath);
 
-				
+
 				if (!uploadDir.exists()) {
 					uploadDir.mkdir();
 				}
@@ -181,14 +152,6 @@ public class UpdateGameServlet extends HttpServlet {
 					imageNotMapped.write(uploadPath + File.separator + fileName);
 					game.setImageName(fileName);
 				}
-<<<<<<< HEAD
-				
-				
-				
-				
-=======
-
->>>>>>> ft/Styling
 				gameRepository.save(game);
 			}
 			url = "/game-list";
