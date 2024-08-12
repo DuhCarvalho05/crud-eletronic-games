@@ -7,12 +7,13 @@ import fileSystem.FileInterpreter;
 import fileSystem.FileManagement;
 import infra.User.UserFileConverter;
 import model.dto.User.UserDto;
+import model.entities.Rating.Rating;
 import model.entities.User.User;
 import repository.IRepository;
 
 public class UserRepository implements IRepository<User, Long> {
 
-	private static Long SEQUENCE = 0L;
+	private Long SEQUENCE = 0L;
 
 	private String userFileName = "user.csv";
 
@@ -24,6 +25,17 @@ public class UserRepository implements IRepository<User, Long> {
         this.fileManagement = new FileManagement();
         this.fileInterpreter = new FileInterpreter();
         this.userFileConverter = new UserFileConverter();
+        
+        Collection<User> users = findAll();
+    	if(!users.isEmpty()) {
+    		var aux = 0L;
+    		for(User g : users) {
+    			if (aux < g.getId()) {
+    				aux = g.getId();
+    			}
+    		}
+    		SEQUENCE = aux;    		
+    	}
     }
 
 	@Override

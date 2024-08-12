@@ -19,7 +19,7 @@ import repository.IRepository;
 
 public class GameRepository implements IRepository<Game, Long> {
 
-	private static Long SEQUENCE = 0L;
+	private  Long SEQUENCE = 0L;
 
 	private final String gameFileName = "game.csv";
 	private final String requirementFileName = "requirement.csv";
@@ -35,6 +35,7 @@ public class GameRepository implements IRepository<Game, Long> {
     private final PlatformFileConverter platformFileConverter;
 
     public GameRepository() {
+    		
     	this.fileManagement = new FileManagement();
         this.fileInterpreter = new FileInterpreter();
 
@@ -44,6 +45,20 @@ public class GameRepository implements IRepository<Game, Long> {
 
         this.requirementFileConverter = new RequirementFileConverter();
         this.platformFileConverter = new PlatformFileConverter();
+        
+
+    	Collection<Game> games = findAll();
+    	if(!games.isEmpty()) {
+    		var aux = 0L;
+    		for(Game g : games) {
+    			if (aux < g.getId()) {
+    				aux = g.getId();
+    			}
+    		}
+    		SEQUENCE = aux;    		
+    	}
+    		
+        
 
     }
 

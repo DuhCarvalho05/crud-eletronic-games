@@ -7,6 +7,7 @@ import fileSystem.FileInterpreter;
 import fileSystem.FileManagement;
 import infra.Rating.RatingFileConverter;
 import model.dto.Rating.RatingDto;
+import model.entities.Category.Category;
 import model.entities.Game.Game;
 import model.entities.Rating.Rating;
 import model.entities.User.User;
@@ -14,7 +15,7 @@ import repository.IRepository;
 
 public class RatingRepository implements IRepository<Rating, Long> {
 
-	private static Long SEQUENCE = 0L;
+	private Long SEQUENCE = 0L;
 
 	private final String ratingFileName = "rating.csv";
 
@@ -32,6 +33,17 @@ public class RatingRepository implements IRepository<Rating, Long> {
 
 		this.userRepository = new UserRepository();
 		this.gameRepository = new GameRepository();
+		
+		Collection<Rating> rating = findAll();
+    	if(!rating.isEmpty()) {
+    		var aux = 0L;
+    		for(Rating g : rating) {
+    			if (aux < g.getId()) {
+    				aux = g.getId();
+    			}
+    		}
+    		SEQUENCE = aux;    		
+    	}
 	}
 
 	@Override

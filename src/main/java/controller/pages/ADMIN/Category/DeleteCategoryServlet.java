@@ -1,4 +1,4 @@
-package controller.pages.ADMIN.Category;
+	package controller.pages.ADMIN.Category;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -48,7 +48,7 @@ public class DeleteCategoryServlet extends HttpServlet {
 			categoryId = request.getPathInfo().substring(1);
 		}
 
-		String url = "/ADMIN/category-list.jsp";
+		String url = "/update-category";
 		String msg = "error";
 
 		try {

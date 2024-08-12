@@ -44,7 +44,7 @@ public class DeleteGameServlet extends HttpServlet {
 			gameId = request.getPathInfo().substring(1);
 		}
 
-		String url = "/ADMIN/game-list.jsp";
+		String url = "/game-list";
 		String msg = "error";
 		
 		try {

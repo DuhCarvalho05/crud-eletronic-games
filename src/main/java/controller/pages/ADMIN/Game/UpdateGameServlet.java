@@ -86,9 +86,9 @@ public class UpdateGameServlet extends HttpServlet {
 		String gameId = request.getParameter("id");
 		String title = request.getParameter("title");
 		String publisher = request.getParameter("publisher");
-		String release = request.getParameter("release");
+		LocalDateTime release = LocalDateTime.parse(request.getParameter("release"));
 		String synopsis = request.getParameter("synopsis");
-		String categoryId = request.getParameter("categoryId");
+		Long categoryId = Long.parseLong(request.getParameter("categoryId"));
 		String requirementNotMapped = request.getParameter("requirement");
 		String platformNotMapped = request.getParameter("platform");
 		Part imageNotMapped = request.getPart("image");
@@ -101,42 +101,60 @@ public class UpdateGameServlet extends HttpServlet {
 			Long id = Long.parseLong(gameId);
 			Game game = gameRepository.findById(id);
 			
-			if (game != null) {
-				game.setTitle(title);
-				game.setSynopsis(synopsis);
-				game.setPublisher(publisher);
-				game.setRelease(LocalDateTime.parse(release));
-				game.setCategory(categoryRepository.findById(Long.parseLong(categoryId)));
-				
-				Map<String, String> requirement = new HashMap<>();
-				String[] lines = requirementNotMapped.split("\n");
-				for(String line : lines) {
-					String[] tuples = line.split(";");
-					requirement.put(tuples[0], tuples[1]);
-				}
-				game.setRequirement(requirement);
-				
-				
-				Collection<String> platform = new ArrayList<>();
-				String[] values = platformNotMapped.split(";");
-				for(String value : values) {
-					platform.add(value);
-				}
-				game.setPlatform(platform);
 			
-
+			if (game != null) {
+				
+				if(!title.isBlank() || title != game.getTitle()) {game.setTitle(title);}
+				if(!publisher.isBlank() || publisher != game.getPublisher()) {game.setPublisher(publisher);}
+				if(release != null || !release.equals(game.getRelease())) {game.setRelease(release);}
+				if(!synopsis.isBlank()|| synopsis != game.getSynopsis()) {game.setSynopsis(synopsis);}
+				if(categoryId != null || categoryId != game.getCategory().getId()) {game.setCategory(categoryRepository.findById(categoryId));}
+				
+				
+				if(requirementNotMapped != null ) {
+					if(!requirementNotMapped.isBlank()) {
+						Map<String, String> requirement = new HashMap<>();
+						String[] lines = requirementNotMapped.split("\n");
+						for(String line : lines) {
+							String[] tuples = line.split(";");
+							requirement.put(tuples[0], tuples[1]);
+						}
+						if(!requirement.equals(game.getRequirement())) {
+							game.setRequirement(requirement);
+						}
+					}
+					
+					
+				}
+				
+				if(platformNotMapped != null) {
+					if(!platformNotMapped.isBlank()) {
+						Collection<String> platform = new ArrayList<>();
+						String[] values = platformNotMapped.split(";");
+						for(String value : values) {
+							platform.add(value);
+						}
+						if(!platform.equals(game.getPlatform())) {
+						  game.setPlatform(platform);
+						}
+					}
+					
+				}				
 				File uploadDir = new File(uploadPath);
 
+				
 				if (!uploadDir.exists()) {
 					uploadDir.mkdir();
 				}
 
-
-				if(!imageNotMapped.getName().isEmpty()) {
-					String fileName = generateFileName(getFileName(imageNotMapped));
+				String fileName = generateFileName(getFileName(imageNotMapped));
+				if(!fileName.isBlank()) {
 					imageNotMapped.write(uploadPath + File.separator + fileName);
 					game.setImageName(fileName);
 				}
+				
+				
+				
 				
 				gameRepository.save(game);
 			}
