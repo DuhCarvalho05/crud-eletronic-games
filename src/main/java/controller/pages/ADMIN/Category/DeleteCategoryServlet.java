@@ -57,7 +57,7 @@ public class DeleteCategoryServlet extends HttpServlet {
 		}
 
 		String url = "/update-category";
-		String msg = "error";
+		String msg = "";
 
 		try {
 			Long id = Long.parseLong(categoryId);
@@ -69,7 +69,8 @@ public class DeleteCategoryServlet extends HttpServlet {
 				
 				if(gamesWithThisCategory.isEmpty()) {					
 					categoryRepository.deleteById(id);
-					msg = "deleted";
+					getServletContext().removeAttribute("msg");
+					msg = "";
 				}else {
 					msg = "error";
 				}
