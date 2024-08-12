@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
-import model.entities.Category.Category;
 import model.entities.Game.Game;
 import repository.impl.CategoryRepository;
 import repository.impl.GameRepository;
@@ -36,7 +35,7 @@ public class UpdateGameServlet extends HttpServlet {
 	private final String uploadPath = PathFile.getInstance().getPath() + "/images/";
 	private final GameRepository gameRepository;
 	private final CategoryRepository categoryRepository;
-       
+
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -49,32 +48,33 @@ public class UpdateGameServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		getServletContext().setAttribute("game", gameRepository.findAll());
-		
+
 		String gameId = "";
-		
+
 		if(request.getPathInfo() != null && !request.getPathInfo().isEmpty()) {
 			gameId = request.getPathInfo().substring(1);
 		}
-		
-		
+
+
 		String url = "/ADMIN/game-list";
 		String msg = "not-found";
-		
+
 		try {
 			Long id = Long.parseLong(gameId);
 			Game game = gameRepository.findById(id);
-			
+
 			getServletContext().setAttribute("game", game);
 
-			
+
 			url = "/ADMIN/update-game.jsp";
 		}catch(NumberFormatException e) {
 			e.printStackTrace();
 			msg = "nan";
 		}
-		
+
 		getServletContext().setAttribute("msg", msg);
 		getServletContext().getRequestDispatcher(url).forward(request, response);
 	}
@@ -82,6 +82,7 @@ public class UpdateGameServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String gameId = request.getParameter("id");
 		String title = request.getParameter("title");
@@ -94,20 +95,20 @@ public class UpdateGameServlet extends HttpServlet {
 		Part imageNotMapped = request.getPart("image");
 
 		String url = "/update-game";
-		String msg = "empty-fields";	
+		String msg = "empty-fields";
 
-		
+
 		try {
 			Long id = Long.parseLong(gameId);
 			Game game = gameRepository.findById(id);
-			
+
 			if (game != null) {
 				game.setTitle(title);
 				game.setSynopsis(synopsis);
 				game.setPublisher(publisher);
 				game.setRelease(LocalDateTime.parse(release));
 				game.setCategory(categoryRepository.findById(Long.parseLong(categoryId)));
-				
+
 				Map<String, String> requirement = new HashMap<>();
 				String[] lines = requirementNotMapped.split("\n");
 				for(String line : lines) {
@@ -115,15 +116,15 @@ public class UpdateGameServlet extends HttpServlet {
 					requirement.put(tuples[0], tuples[1]);
 				}
 				game.setRequirement(requirement);
-				
-				
+
+
 				Collection<String> platform = new ArrayList<>();
 				String[] values = platformNotMapped.split(";");
 				for(String value : values) {
 					platform.add(value);
 				}
 				game.setPlatform(platform);
-			
+
 
 				File uploadDir = new File(uploadPath);
 
@@ -137,7 +138,7 @@ public class UpdateGameServlet extends HttpServlet {
 					imageNotMapped.write(uploadPath + File.separator + fileName);
 					game.setImageName(fileName);
 				}
-				
+
 				gameRepository.save(game);
 			}
 			url = "/game-list";
@@ -145,9 +146,9 @@ public class UpdateGameServlet extends HttpServlet {
 			e.printStackTrace();
 			msg = "nan";
 		}
-		
-		
-		
+
+
+
 		getServletContext().setAttribute("msg", msg);
 		getServletContext().getRequestDispatcher(url).forward(request, response);
 	}

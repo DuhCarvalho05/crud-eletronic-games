@@ -80,17 +80,17 @@ public class RatingRepository implements IRepository<Rating, Long> {
 		ratings.removeIf( rating -> rating.getId().equals(identifier) );
 		ratings.forEach( rating -> fileManagement.write(new RatingDto(rating.getId(), rating.getDescription(), rating.getStars(), rating.getCreatedAt(), rating.getUser().getId(), rating.getGame().getId()), ratingFileName) );
 	}
-	
+
 	public Collection<Rating> findByGameId(Long gameId){
 		Collection<Rating> ratings = findAll();
-		
+
 		Collection<Rating> ratingsOfThisGame = new ArrayList<>();
 		for(Rating rating : ratings) {
 			if(rating.getGame().getId().equals(gameId)) {
 				ratingsOfThisGame.add(rating);
 			}
 		}
-		
+
 		return ratingsOfThisGame;
 	}
 

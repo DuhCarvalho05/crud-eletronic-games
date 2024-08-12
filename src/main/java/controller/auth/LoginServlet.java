@@ -19,10 +19,10 @@ import repository.impl.UserRepository;
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+
 	private final CategoryRepository categoryRepository;
 	private final UserRepository userRepository;
-	
+
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -35,6 +35,7 @@ public class LoginServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		getServletContext().setAttribute("categories", categoryRepository.findAll());
 		getServletContext().getRequestDispatcher("/login.jsp").forward(request, response);
@@ -43,6 +44,7 @@ public class LoginServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
@@ -52,16 +54,16 @@ public class LoginServlet extends HttpServlet {
 
 		if(!email.isEmpty() && !password.isEmpty()) {
 			User user = userRepository.findByEmail(email);
-			
+
 			if(user != null && User.autenticate(user, password)) {
 				msg = "success";
-				url = "/home";
-				HttpSession session = request.getSession(); 
+				url = "/";
+				HttpSession session = request.getSession();
 				session.setAttribute("user", user);
 			}
-			
+
 		}
-		
+
 		getServletContext().setAttribute("msg", msg);
 		getServletContext().getRequestDispatcher(url).forward(request, response);
 	}

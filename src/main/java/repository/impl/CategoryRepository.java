@@ -75,16 +75,16 @@ public class CategoryRepository implements IRepository<Category, Long> {
 		categories.removeIf( category -> category.getId().equals(identifier) );
 		categories.forEach( category -> fileManagement.write(new CategoryDto(category.getId(), category.getName()), categoryFileName) );
 	}
-	
+
 	public Category findByName(String name) {
 		Collection<Category> categories = findAll();
-		
+
 		for(Category category : categories) {
 			if(category.getName().equalsIgnoreCase(name)){
 				return category;
 			}
 		}
-		
+
 		return null;
 	}
 
