@@ -3,7 +3,7 @@ import cardgame from "./cardgame.js";
 
 const header = () => {
 	
-	const x = async () => {
+	const handleLogOut = async () => {
 		await onLogOut();
 	}
 	
@@ -99,7 +99,7 @@ const header = () => {
 								  <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
 								</svg>`
           )
-          .class$("text-danger btn btn-danger")
+          .class$("text-danger btn btn-sm")
           .onclick$(handleLogOut)
       ).class$("d-flex align-items-center gap-4")
     ).class$("container")
