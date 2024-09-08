@@ -1,6 +1,8 @@
+import { removeUserSession, setUserSession } from "../auth/session.js";
+
 const baseURL = "/crud-eletronic-game"
 
-const getAll = async (uri, anchor, component, refreshFn) => {
+const getAll = async (uri, anchor, component) => {
 	return await fetch(baseURL + uri, {
 		method: "GET",
 		headers: {
@@ -17,7 +19,7 @@ const getAll = async (uri, anchor, component, refreshFn) => {
 			console.log(data);
 
 			data.map((data) => {
-				document.getElementById(anchor).appendChild(component(data, refreshFn));
+				document.getElementById(anchor).appendChild(component(data));
 			});
 		})
 		.catch((error) => console.log(error));
@@ -64,7 +66,8 @@ const onLogin = async (form) => {
 
 			return response.json();
 		})
-		.then(() => {
+		.then((data) => {
+			setUserSession(data)
 			console.log("Logado com sucesso");
 		})
 		.catch(() => console.log("Erro no servidor"));
@@ -78,18 +81,11 @@ const onLogOut = async () => {
 		}
 	})
 		.then((response) => {
-			if (response.status === 400) {
-				throw new Error("Bad request");
+			if(!response.ok){
+				throw new Error("Error");
 			}
-
-			if(response.ok){				
-				window.location.href = "#/login";
-			}
-			
-			return response.json();
-		})
-		.then(() => {
-			console.log("Deslogado com sucesso");
+			removeUserSession();			
+			window.location.href = "#/login";
 		})
 		.catch(() => console.log("Erro no servidor"));
 }

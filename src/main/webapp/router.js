@@ -10,31 +10,26 @@ import updateCategory from "./src/pages/admin/category/update-category.js";
 
 const root = document.getElementById("root");
 
-let count = 0;
-
 const r = router({
   "/": () => home(),
-  "/test": () => {
-    return div(
-      p("Counter : " + count),
-      button("Incrementar").onclick$(() => {
-        count += 1;
-        r.refresh();
-      })
-    );
-  },
   "/catalog": (props) => catalog(props),
   "/search": () => search(),
   "/details": (props) => details(props),
   "/login": () => login(),
   "/singup": () => singup(),
-  "/categories": () => categoryList(() => r.refresh()),
+  "/categories": () => categoryList(),
   "/register-category": () => registerCategory(),
   "/update-category": (props) => updateCategory(props),
   "/games": () => div(),
   "/register-game": () => div(),
-  "/update-game": (props) => div(),
+  "/update-game": () => div(),
   "/404": () => div("Página não encontrada"),
 });
 
 root.appendChild(r);
+
+const refresh = () => {
+	r.refresh()
+};
+
+export { refresh }

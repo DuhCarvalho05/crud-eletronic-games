@@ -1,5 +1,5 @@
-import layout from "../../../layouts/layout.js"
 import { getUnique, onUpdateCategory } from "../../../api/services.js"
+import adminLayout from "../../../layouts/admin.js";
 
 const inputName = (props) => {
 	
@@ -39,7 +39,7 @@ const updateCategory = (props) => {
 		}
 	}
 
-	return layout(
+	return adminLayout(
 		div(
 			div(
 				span("Atualizar categoria").class$("fw-bold fs-4 text-center"),

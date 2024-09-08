@@ -1,5 +1,5 @@
-import layout from "../../../layouts/layout.js"
 import { onRegisterCategory } from "../../../api/services.js"
+import adminLayout from "../../../layouts/admin.js";
 
 const registerCategory = () => {
 
@@ -20,7 +20,7 @@ const registerCategory = () => {
 		}
 	}
 
-	return layout(
+	return adminLayout(
 		div(
 			div(
 				span("Nova categoria").class$("fw-bold fs-4 text-center"),

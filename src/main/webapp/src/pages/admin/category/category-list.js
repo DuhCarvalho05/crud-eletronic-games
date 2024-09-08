@@ -1,12 +1,13 @@
+import { refresh } from "../../../../router.js";
 import { getAll, onDeleteCategory } from "../../../api/services.js"
-import layout from "../../../layouts/layout.js"
+import adminLayout from "../../../layouts/admin.js";
 
-const row = (props, refreshFn) => {
+const row = (props) => {
 	const { id, name } = props;
 	
 	const handleDeleteCategory = async () => {
 		await onDeleteCategory(id)
-		refreshFn();
+		refresh();
 	}
 
 	return tr(
@@ -42,10 +43,10 @@ const row = (props, refreshFn) => {
 	)
 }
 
-const categoryList = (refreshFn) => {
-	getAll("/category", "table-categories", row, refreshFn)
+const categoryList = () => {
+	getAll("/category", "table-categories", row)
 
-	return layout(
+	return adminLayout(
 		div(
 			a(
 				span().innerHTML$(`<svg
