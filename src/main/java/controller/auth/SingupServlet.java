@@ -1,5 +1,6 @@
 package controller.auth;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
@@ -8,19 +9,22 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
+
 import model.entities.User.User;
 import model.entities.User.UserType;
+import model.payload.Auth.LoginRequest;
+import model.payload.Auth.SingUpRequest;
 import repository.impl.CategoryRepository;
 import repository.impl.UserRepository;
 
 /**
  * Servlet implementation class SingupServlet
  */
-@WebServlet("/singup")
+@WebServlet("/auth/singup")
 public class SingupServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	private final CategoryRepository categoryRepository;
 	private final UserRepository userRepository;
 
     /**
@@ -28,48 +32,37 @@ public class SingupServlet extends HttpServlet {
      */
     public SingupServlet() {
         super();
-        this.categoryRepository = new CategoryRepository();
         this.userRepository = new UserRepository();
     }
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		getServletContext().setAttribute("categories", categoryRepository.findAll());
-		getServletContext().removeAttribute("msg");
-		getServletContext().getRequestDispatcher("/singup.jsp").forward(request, response);
-	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String name = request.getParameter("name");
-		String email = request.getParameter("email");
-		String password = request.getParameter("password");
+		BufferedReader reader = request.getReader();
+		Gson gson = new Gson();
+		SingUpRequest signUpRequest = gson.fromJson(reader, SingUpRequest.class);
+		
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
 
-		String url = "/singup.jsp";
-		String msg = "Preencha todos os campos";
+		if(signUpRequest.name() != null && !signUpRequest.name().isEmpty() 
+				&& signUpRequest.email() != null && !signUpRequest.email().isEmpty() 
+				&& signUpRequest.password() != null && !signUpRequest.password().isEmpty()) {
 
-		if(!name.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
-
-			User existentUser = userRepository.findByEmail(email);
+			User existentUser = userRepository.findByEmail(signUpRequest.email());
 
 			if(existentUser != null) {
-				msg = "Email já cadastrado";
+				response.setStatus(409);
 			}else {
-				User user = new User(name, email, password, UserType.DEFAULT);
+				User user = new User(signUpRequest.name(), signUpRequest.email(), signUpRequest.password(), UserType.DEFAULT);
 				userRepository.save(user);
-				msg = "success";
-				url = "/login.jsp";
+				response.setStatus(201);
 			}
+		}else {
+			response.setStatus(400);
 		}
-
-		getServletContext().setAttribute("msg", msg);
-		getServletContext().getRequestDispatcher(url).forward(request, response);
 	}
 
 }

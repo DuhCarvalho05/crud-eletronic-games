@@ -12,7 +12,7 @@ public class Game {
 	private String title;
 	private String imageName;
 	private String publisher;
-	private LocalDateTime release;
+	private String release;
 	private String synopsis;
 	private Category category;
 	private Map<String, String> requirement;
@@ -20,7 +20,7 @@ public class Game {
 
 	public Game() {}
 
-	public Game(Long id, String title, String imageName, String publisher, LocalDateTime release, String synopsis, Category category, Map<String, String> requirement, Collection<String> platform) {
+	public Game(Long id, String title, String imageName, String publisher, String release, String synopsis, Category category, Map<String, String> requirement, Collection<String> platform) {
 		this.id = id;
 		this.title = title;
 		this.imageName = imageName;
@@ -64,11 +64,11 @@ public class Game {
 		this.publisher = publisher;
 	}
 
-	public LocalDateTime getRelease() {
+	public String getRelease() {
 		return release;
 	}
 
-	public void setRelease(LocalDateTime release) {
+	public void setRelease(String release) {
 		this.release = release;
 	}
 

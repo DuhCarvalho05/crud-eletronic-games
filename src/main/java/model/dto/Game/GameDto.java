@@ -10,13 +10,13 @@ public class GameDto implements Writable<GameDto> {
 	private String title;
 	private String imageName;
 	private String publisher;
-	private LocalDateTime release;
+	private String release;
 	private String synopsis;
 	private Long categoryId;
 
 	public GameDto() {}
 
-	public GameDto(Long id, String title, String imageName, String publisher, LocalDateTime release, String synopsis, Long categoryId) {
+	public GameDto(Long id, String title, String imageName, String publisher, String release, String synopsis, Long categoryId) {
 		this.id = id;
 		this.title = title;
 		this.imageName = imageName;
@@ -42,7 +42,7 @@ public class GameDto implements Writable<GameDto> {
 		return publisher;
 	}
 
-	public LocalDateTime getRelease() {
+	public String getRelease() {
 		return release;
 	}
 
@@ -56,7 +56,7 @@ public class GameDto implements Writable<GameDto> {
 
 	@Override
 	public GameDto fromString(String... args) {
-		return new GameDto(Long.parseLong(args[0]), args[1], args[2], args[3], LocalDateTime.parse(args[4]), args[5], Long.parseLong(args[6]));
+		return new GameDto(Long.parseLong(args[0]), args[1], args[2], args[3], args[4], args[5], Long.parseLong(args[6]));
 	}
 
 	@Override
