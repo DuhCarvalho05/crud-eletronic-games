@@ -14,6 +14,7 @@ import com.google.gson.Gson;
 
 import model.entities.User.User;
 import model.payload.Auth.LoginRequest;
+import model.payload.Auth.UserResponse;
 import repository.impl.CategoryRepository;
 import repository.impl.UserRepository;
 
@@ -53,6 +54,7 @@ public class LoginServlet extends HttpServlet {
 			if(user != null && User.autenticate(user, loginRequest.password())) {
 				HttpSession session = request.getSession();
 				session.setAttribute("user", user);
+				response.getWriter().write(gson.toJson(new UserResponse(user.getId(), user.getName(), user.getEmail(), user.getType())));
 				response.setStatus(200);
 			}else {				
 				response.setStatus(404);
@@ -66,8 +68,12 @@ public class LoginServlet extends HttpServlet {
 	@Override
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		session.invalidate();
-		response.setStatus(200);
+		if(session != null) {			
+			session.invalidate();
+			response.setStatus(200);
+		}else {
+			response.setStatus(406);
+		}
 	}
 
 }
