@@ -1,7 +1,5 @@
 package model.entities.Rating;
 
-import java.time.LocalDateTime;
-
 import model.entities.Game.Game;
 import model.entities.User.User;
 
@@ -10,13 +8,13 @@ public class Rating {
 	private Long id;
 	private String description;
 	private int stars;
-	private LocalDateTime createdAt;
+	private String createdAt;
 	private User user;
 	private Game game;
 
 	public Rating() {}
 
-	public Rating(Long id, String description,  int stars, LocalDateTime createdAt, User user, Game game) {
+	public Rating(Long id, String description,  int stars, String createdAt, User user, Game game) {
 		this.id = id;
 		this.description = description;
 		this.stars = stars;
@@ -49,11 +47,11 @@ public class Rating {
 		this.stars = stars;
 	}
 
-	public LocalDateTime getCreatedAt() {
+	public String getCreatedAt() {
 		return createdAt;
 	}
 
-	public void setCreatedAt(LocalDateTime createdAt) {
+	public void setCreatedAt(String createdAt) {
 		this.createdAt = createdAt;
 	}
 
