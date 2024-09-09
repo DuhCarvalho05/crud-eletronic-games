@@ -9,13 +9,6 @@ const registerGame = () => {
 		await onRegisterGame(form);
 	}
 
-	const handlePressEnter = (e) => {
-		if (e.keyCode === 13) {
-			e.preventDefault();
-			handleRegisterGame(e);
-		}
-	}
-
 	return adminLayout(
 		div(
 			div(
@@ -95,7 +88,6 @@ const registerGame = () => {
 					)
 						.id$("register-game")
 						.att$("method", "POST")
-						.onkeydown$(handlePressEnter)
 				).class$("w-50 p-3")
 			).class$("container d-flex justify-content-center mt-5"),
 		)
