@@ -1,4 +1,5 @@
 import { removeUserSession, setUserSession } from "../auth/session.js";
+import { refresh } from "../../router.js"
 
 const baseURL = "/crud-eletronic-game"
 
@@ -64,7 +65,7 @@ const onLogin = async (form) => {
 			}
 
 			window.location.href = "#/";
-			
+			refresh();
 
 			return response.json();
 		})
@@ -88,6 +89,7 @@ const onLogOut = async () => {
 			}
 			removeUserSession();			
 			window.location.href = "#/login";
+			refresh();
 		})
 		.catch(() => console.log("Erro no servidor"));
 }
