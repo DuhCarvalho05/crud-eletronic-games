@@ -1,4 +1,5 @@
 import { removeUserSession, setUserSession } from "../auth/session.js";
+import { refresh } from "../../router.js"
 
 const baseURL = "/crud-eletronic-game"
 
@@ -64,7 +65,7 @@ const onLogin = async (form) => {
 			}
 
 			window.location.href = "#/";
-			
+			refresh();
 
 			return response.json();
 		})
@@ -83,11 +84,12 @@ const onLogOut = async () => {
 		}
 	})
 		.then((response) => {
-			if(!response.ok){
+			if (!response.ok) {
 				throw new Error("Error");
 			}
-			removeUserSession();			
+			removeUserSession();
 			window.location.href = "#/login";
+			refresh();
 		})
 		.catch(() => console.log("Erro no servidor"));
 }
@@ -104,15 +106,15 @@ const onSignUp = async (form) => {
 			if (response.status === 400) {
 				throw new Error("Bad request");
 			}
-			
+
 			if (response.status === 409) {
 				throw new Error("Email já cadastrado");
 			}
 
-			if(response.ok){				
+			if (response.ok) {
 				window.location.href = "#/login";
 			}
-			
+
 			return response.json();
 		})
 		.then(() => {
@@ -134,10 +136,10 @@ const onRegisterCategory = async (form) => {
 				throw new Error("Bad request");
 			}
 
-			if(response.ok){				
+			if (response.ok) {
 				window.location.href = "#/categories";
 			}
-			
+
 			return response.json();
 		})
 		.then(() => {
@@ -146,7 +148,7 @@ const onRegisterCategory = async (form) => {
 		.catch(() => console.log("Erro no servidor"));
 }
 
-const onUpdateCategory = async (id, form) =>{
+const onUpdateCategory = async (id, form) => {
 	return await fetch(baseURL + "/category?categoryId=" + id, {
 		method: "PUT",
 		headers: {
@@ -159,10 +161,10 @@ const onUpdateCategory = async (id, form) =>{
 				throw new Error("Bad request");
 			}
 
-			if(response.ok){				
+			if (response.ok) {
 				window.location.href = "#/categories";
 			}
-			
+
 			return response.json();
 		})
 		.then(() => {
@@ -171,7 +173,7 @@ const onUpdateCategory = async (id, form) =>{
 		.catch(() => console.log("Erro no servidor"));
 }
 
-const onDeleteCategory =  async (id) => {
+const onDeleteCategory = async (id) => {
 	return await fetch(baseURL + "/category?categoryId=" + id, {
 		method: "DELETE",
 		headers: {
@@ -184,10 +186,10 @@ const onDeleteCategory =  async (id) => {
 				throw new Error("Bad request");
 			}
 
-			if(response.ok){				
+			if (response.ok) {
 				window.location.href = "#/categories";
 			}
-			
+
 			return response.json();
 		})
 		.then(() => {
@@ -208,10 +210,10 @@ const onRegisterGame = async (form) => {
 				throw new Error("Bad request");
 			}
 
-			if(response.ok){				
+			if (response.ok) {
 				window.location.href = "#/games";
 			}
-			
+
 			return response.json();
 		})
 		.then(() => {
@@ -220,7 +222,7 @@ const onRegisterGame = async (form) => {
 		.catch(() => console.log("Erro no servidor"));
 }
 
-const onUpdateGame = async (id, form) =>{
+const onUpdateGame = async (id, form) => {
 	return await fetch(baseURL + "/game?gameId=" + id, {
 		method: "PUT",
 		headers: {
@@ -233,10 +235,10 @@ const onUpdateGame = async (id, form) =>{
 				throw new Error("Bad request");
 			}
 
-			if(response.ok){				
+			if (response.ok) {
 				window.location.href = "#/games";
 			}
-			
+
 			return response.json();
 		})
 		.then(() => {
@@ -245,7 +247,7 @@ const onUpdateGame = async (id, form) =>{
 		.catch(() => console.log("Erro no servidor"));
 }
 
-const onDeleteGame =  async (id) => {
+const onDeleteGame = async (id) => {
 	return await fetch(baseURL + "/game?gameId=" + id, {
 		method: "DELETE",
 		headers: {
@@ -258,10 +260,10 @@ const onDeleteGame =  async (id) => {
 				throw new Error("Bad request");
 			}
 
-			if(response.ok){				
+			if (response.ok) {
 				window.location.href = "#/games";
 			}
-			
+
 			return response.json();
 		})
 		.then(() => {
@@ -270,18 +272,43 @@ const onDeleteGame =  async (id) => {
 		.catch(() => console.log("Erro no servidor"));
 }
 
+const onSendRating = async (gameId, form) => {
+	return await fetch(baseURL + "/ratings", {
+		method: "POST",
+		headers: {
+			accept: "appliaction/json",
+		},
+		body: form,
+	})
+		.then((response) => {
+			if (response.status === 400) {
+				throw new Error("Bad request");
+			}
 
+			if (response.ok) {
+				window.location.href = "#/details/"+gameId;
+				refresh();
+			}
 
-export { 
-	getAll, 
-	getUnique, 
-	onLogin, 
+			return response.json();
+		})
+		.then(() => {
+			console.log("Deletado com sucesso");
+		})
+		.catch(() => console.log("Erro no servidor"));
+}
+
+export {
+	getAll,
+	getUnique,
+	onLogin,
 	onSignUp,
 	onRegisterGame,
 	onUpdateGame,
 	onDeleteGame,
-	onRegisterCategory, 
-	onUpdateCategory, 
+	onRegisterCategory,
+	onUpdateCategory,
 	onDeleteCategory,
 	onLogOut,
-	};
+	onSendRating
+};

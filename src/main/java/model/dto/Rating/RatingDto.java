@@ -1,7 +1,5 @@
 package model.dto.Rating;
 
-import java.time.LocalDateTime;
-
 import fileSystem.Writable;
 
 public class RatingDto implements Writable<RatingDto> {
@@ -9,14 +7,14 @@ public class RatingDto implements Writable<RatingDto> {
 	private Long id;
 	private String description;
 	private int stars;
-	private LocalDateTime createdAt;
+	private String createdAt;
 	private Long userId;
 	private Long gameId;
 
 	public RatingDto() {
 	}
 
-	public RatingDto(Long id, String description, int stars, LocalDateTime createdAt, Long userId, Long gameId) {
+	public RatingDto(Long id, String description, int stars, String createdAt, Long userId, Long gameId) {
 		this.id = id;
 		this.description = description;
 		this.stars = stars;
@@ -37,7 +35,7 @@ public class RatingDto implements Writable<RatingDto> {
 		return stars;
 	}
 
-	public LocalDateTime getCreatedAt() {
+	public String getCreatedAt() {
 		return createdAt;
 	}
 
@@ -51,7 +49,7 @@ public class RatingDto implements Writable<RatingDto> {
 
 	@Override
 	public RatingDto fromString(String... args) {
-		return new RatingDto(Long.parseLong(args[0]), args[1], Integer.parseInt(args[2]), LocalDateTime.parse(args[3]), Long.parseLong(args[4]), Long.parseLong(args[5]));
+		return new RatingDto(Long.parseLong(args[0]), args[1], Integer.parseInt(args[2]), args[3], Long.parseLong(args[4]), Long.parseLong(args[5]));
 	}
 
 	@Override

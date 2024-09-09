@@ -30,7 +30,7 @@ const login = () => {
 					div(
 						input()
 						.class$("form-control me-2 input")
-						.style$("background: #000; border-color: #27272a; color: #fafafa; font-size: 14px;")
+						.style$("background: #000; border-color: #27272a; color: #fff; font-size: 14px;")
 						.att$("type", "email")
 						.att$("name", "email")
 						.att$("placeholder", "name@example.com")
@@ -39,7 +39,7 @@ const login = () => {
 					div(
 						input()
 						.class$("form-control me-2 input")
-						.style$("background: #000; border-color: #27272a; color: #fafafa; font-size: 14px;")
+						.style$("background: #000; border-color: #27272a; color: #fff; font-size: 14px;")
 						.att$("type", "password")
 						.att$("name", "password")
 						.att$("placeholder", "sua senha")

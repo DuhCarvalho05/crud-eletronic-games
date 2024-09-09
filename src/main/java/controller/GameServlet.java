@@ -26,86 +26,86 @@ import repository.impl.CategoryRepository;
 import repository.impl.GameRepository;
 import utils.PathFile;
 
-
 @WebServlet("/game/*")
 
-@MultipartConfig(
-  fileSizeThreshold = 1024 * 1024 * 1, // 1 MB
-  maxFileSize = 1024 * 1024 * 10,      // 10 MB
-  maxRequestSize = 1024 * 1024 * 100   // 100 MB
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 1, // 1 MB
+		maxFileSize = 1024 * 1024 * 10, // 10 MB
+		maxRequestSize = 1024 * 1024 * 100 // 100 MB
 )
-
 
 public class GameServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private final String uploadPath = PathFile.getInstance().getPath() + "/images/";
 	private final CategoryRepository categoryRepository;
 	private final GameRepository gameRepository;
-	
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public GameServlet() {
-        super();        
-        this.categoryRepository = new CategoryRepository();
-        this.gameRepository = new GameRepository();
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public GameServlet() {
+		super();
+		this.categoryRepository = new CategoryRepository();
+		this.gameRepository = new GameRepository();
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		String title = request.getParameter("title");
-		
-		if(title != null && !title.isEmpty()) {
+
+		if (title != null && !title.isEmpty()) {
 			List<Game> gamesOfThisSearch = (List<Game>) gameRepository.searchByTitle(title);
 			String json = new Gson().toJson(gamesOfThisSearch);
-			
+
 			response.setContentType("application/json");
 			response.setCharacterEncoding("UTF-8");
 			response.getWriter().write(json);
-		}else {
+		} else {
 			String gameIdStr = "";
 
-			if(request.getPathInfo() != null && !request.getPathInfo().isEmpty()) {
+			if (request.getPathInfo() != null && !request.getPathInfo().isEmpty()) {
 				gameIdStr = request.getPathInfo().substring(1);
 			}
-			
-			if(!gameIdStr.isEmpty()) {
+
+			if (!gameIdStr.isEmpty()) {
 				try {
 					Long gameId = Long.parseLong(gameIdStr);
-					
+
 					Game game = gameRepository.findById(gameId);
-					
-					if(game != null) {
+
+					if (game != null) {
 						String json = new Gson().toJson(game);
-						
+
 						response.setContentType("application/json");
 						response.setCharacterEncoding("UTF-8");
 						response.getWriter().write(json);
 					}
-					
-				}catch(Exception e) {
+
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
-			}else {
+			} else {
 				List<Game> games = (List<Game>) gameRepository.findAll();
 				String json = new Gson().toJson(games);
-				
+
 				response.setContentType("application/json");
 				response.setCharacterEncoding("UTF-8");
 				response.getWriter().write(json);
 			}
 		}
-		
+
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
 	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		String title = request.getParameter("title");
 		String publisher = request.getParameter("publisher");
 		String release = request.getParameter("release");
@@ -114,12 +114,14 @@ public class GameServlet extends HttpServlet {
 		String requirementNotMapped = request.getParameter("requirement");
 		String platformNotMapped = request.getParameter("platform");
 		Part imageNotMapped = request.getPart("image");
+		
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
 
-
-
-		if(title.isEmpty() || publisher.isEmpty() || release.isEmpty() || synopsis.isEmpty() || categoryId.isEmpty() || requirementNotMapped.isEmpty() || platformNotMapped.isEmpty()) {
-			response.setStatus(206);
-		}else {
+		if (title.isEmpty() || publisher.isEmpty() || release.isEmpty() || synopsis.isEmpty() || categoryId.isEmpty()
+				|| requirementNotMapped.isEmpty() || platformNotMapped.isEmpty()) {
+			response.setStatus(400);
+		} else {
 			Game game = new Game();
 			game.setTitle(title);
 			game.setPublisher(publisher);
@@ -129,7 +131,7 @@ public class GameServlet extends HttpServlet {
 
 			Map<String, String> requirement = new HashMap<>();
 			String[] lines = requirementNotMapped.split("\n");
-			for(String line : lines) {
+			for (String line : lines) {
 				String[] tuples = line.split(";");
 				requirement.put(tuples[0], tuples[1]);
 			}
@@ -138,7 +140,7 @@ public class GameServlet extends HttpServlet {
 
 			Collection<String> platform = new ArrayList<>();
 			String[] values = platformNotMapped.split(";");
-			for(String value : values) {
+			for (String value : values) {
 				platform.add(value);
 			}
 
@@ -146,7 +148,7 @@ public class GameServlet extends HttpServlet {
 
 			Category category = categoryRepository.findById(Long.parseLong(categoryId));
 
-			if(category != null) {
+			if (category != null) {
 				game.setCategory(category);
 			}
 
@@ -156,8 +158,7 @@ public class GameServlet extends HttpServlet {
 				uploadDir.mkdir();
 			}
 
-
-			if(!imageNotMapped.getName().isEmpty()) {
+			if (!imageNotMapped.getName().isEmpty()) {
 				String fileName = generateFileName(getFileName(imageNotMapped));
 				imageNotMapped.write(uploadPath + File.separator + fileName);
 				game.setImageName(fileName);
@@ -166,18 +167,17 @@ public class GameServlet extends HttpServlet {
 			gameRepository.save(game);
 			response.setStatus(200);
 		}
-		
+
 	}
-		
 
 	@Override
 	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String gameId = req.getParameter("gameId");
-		
+
 		resp.setContentType("application/json");
 		resp.setCharacterEncoding("UTF-8");
-		
-		if(gameId != null && !gameId.isEmpty()) {
+
+		if (gameId != null && !gameId.isEmpty()) {
 			try {
 				Long id = Long.parseLong(gameId);
 				Game game = gameRepository.findById(id);
@@ -185,8 +185,8 @@ public class GameServlet extends HttpServlet {
 				if (game != null) {
 					gameRepository.deleteById(id);
 					resp.setStatus(200);
-					
-				}else {
+
+				} else {
 					resp.setStatus(406);
 				}
 
@@ -198,18 +198,18 @@ public class GameServlet extends HttpServlet {
 
 	@Override
 	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-	
 		String gameId = req.getParameter("id");
 		String title = req.getParameter("title");
 		String publisher = req.getParameter("publisher");
-		LocalDateTime release = LocalDateTime.parse(req.getParameter("release"));
+		String release = req.getParameter("release");
 		String synopsis = req.getParameter("synopsis");
 		Long categoryId = Long.parseLong(req.getParameter("categoryId"));
 		String requirementNotMapped = req.getParameter("requirement");
 		String platformNotMapped = req.getParameter("platform");
 		Part imageNotMapped = req.getPart("image");
-
+		
+		resp.setContentType("application/json");
+		resp.setCharacterEncoding("UTF-8");
 
 		try {
 			Long id = Long.parseLong(gameId);
@@ -217,71 +217,87 @@ public class GameServlet extends HttpServlet {
 
 			if (game != null) {
 
-				if(!title.isBlank() || title != game.getTitle()) {game.setTitle(title);}
-				if(!publisher.isBlank() || publisher != game.getPublisher()) {game.setPublisher(publisher);}
-				if(release != null || !release.equals(game.getRelease())) {game.setRelease(release);}
-				if(!synopsis.isBlank()|| synopsis != game.getSynopsis()) {game.setSynopsis(synopsis);}
-				if(categoryId != null || categoryId != game.getCategory().getId()) {game.setCategory(categoryRepository.findById(categoryId));}
+				if (!title.isBlank() || title != game.getTitle()) {
+					game.setTitle(title);
+				}
+				if (!publisher.isBlank() || publisher != game.getPublisher()) {
+					game.setPublisher(publisher);
+				}
+				if (release != null || !release.equals(game.getRelease())) {
+					game.setRelease(release);
+				}
+				if (!synopsis.isBlank() || synopsis != game.getSynopsis()) {
+					game.setSynopsis(synopsis);
+				}
+				if (categoryId != null || categoryId != game.getCategory().getId()) {
+					game.setCategory(categoryRepository.findById(categoryId));
+				}
 
-
-				if(requirementNotMapped != null ) {
-					if(!requirementNotMapped.isBlank()) {
+				if (requirementNotMapped != null) {
+					if (!requirementNotMapped.isBlank()) {
 						Map<String, String> requirement = new HashMap<>();
 						String[] lines = requirementNotMapped.split("\n");
-						for(String line : lines) {
+						for (String line : lines) {
 							String[] tuples = line.split(";");
 							requirement.put(tuples[0], tuples[1]);
 						}
-						if(!requirement.equals(game.getRequirement())) {
+						if (!requirement.equals(game.getRequirement())) {
 							game.setRequirement(requirement);
 						}
 					}
 
-
 				}
 
-				if(platformNotMapped != null) {
-					if(!platformNotMapped.isBlank()) {
+				if (platformNotMapped != null) {
+					if (!platformNotMapped.isBlank()) {
 						Collection<String> platform = new ArrayList<>();
 						String[] values = platformNotMapped.split(";");
-						for(String value : values) {
+						for (String value : values) {
 							platform.add(value);
 						}
-						if(!platform.equals(game.getPlatform())) {
-						  game.setPlatform(platform);
+						if (!platform.equals(game.getPlatform())) {
+							game.setPlatform(platform);
 						}
 					}
 
 				}
 				File uploadDir = new File(uploadPath);
 
-
 				if (!uploadDir.exists()) {
 					uploadDir.mkdir();
 				}
 
 				String fileName = generateFileName(getFileName(imageNotMapped));
-				if(!fileName.isBlank()) {
+				if (!fileName.isBlank()) {
 					imageNotMapped.write(uploadPath + File.separator + fileName);
 					game.setImageName(fileName);
 				}
+				
 				gameRepository.save(game);
+				resp.setStatus(200);
+
+			}else {
+				resp.setStatus(400);
 			}
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+			resp.setStatus(404);
+		}
 	}
 
 	private String getFileName(Part part) {
-        String contentDisp = part.getHeader("content-disposition");
-        String[] tokens = contentDisp.split(";");
-        for (String token : tokens) {
-            if (token.trim().startsWith("filename")) {
-                return token.substring(token.indexOf("=") + 2, token.length()-1);
-            }
-        }
-        return "";
-    }
+		String contentDisp = part.getHeader("content-disposition");
+		String[] tokens = contentDisp.split(";");
+		for (String token : tokens) {
+			if (token.trim().startsWith("filename")) {
+				return token.substring(token.indexOf("=") + 2, token.length() - 1);
+			}
+		}
+		return "";
+	}
 
 	private String generateFileName(String actualFileName) {
-		if(actualFileName.isEmpty()) {
+		if (actualFileName.isEmpty()) {
 			return "";
 		}
 
@@ -290,7 +306,7 @@ public class GameServlet extends HttpServlet {
 
 		Long instant = System.currentTimeMillis();
 
-		return String.format("%s.%s",instant, ext);
+		return String.format("%s.%s", instant, ext);
 	}
 
 }

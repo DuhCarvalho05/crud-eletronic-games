@@ -77,7 +77,8 @@ const MUNDANE_TAGS = [
   "th",
   "tr",
   "td",
-  "label"
+  "label",
+  "textarea",
 ];
 for (let tagName of MUNDANE_TAGS) {
   window[tagName] = (...children) => tag(tagName, ...children);
