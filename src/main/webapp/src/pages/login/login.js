@@ -10,7 +10,7 @@ const login = () => {
 		
 		const email = form.get("email");
 		const password = form.get("password");
-		
+		console.log(JSON.stringify({email, password}));
 		await onLogin(JSON.stringify({email, password}));
 	}
 	
