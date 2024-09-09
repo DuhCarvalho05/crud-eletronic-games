@@ -1,4 +1,4 @@
-import { getAll, getUnique } from "../../api/services.js";
+import { getAll, getUnique, onSendRating } from "../../api/services.js";
 import { getUserSession } from "../../auth/session.js";
 import layout from "../../layouts/layout.js";
 
@@ -7,6 +7,18 @@ const formRating = (props) => {
 	const gameId = props;
 
 	const userSession = getUserSession();
+
+	const handleRating = async (e) => {
+		e.preventDefault();
+		const form = new FormData(document.getElementById("form-rating"));
+		
+		const userId = form.get("userId");
+		const gameId = form.get("gameId");
+		const stars = form.get("stars");
+		const description = form.get("description");
+		
+		await onSendRating(gameId, JSON.stringify({userId, gameId, stars, description}));
+	}
 
 	if (userSession === null) return div(
 		span("Acesse sua conta para deixar uma avaliação,"),
@@ -23,7 +35,7 @@ const formRating = (props) => {
 		).class$("d-flex align-items-center gap-2"),
 		div(
 			form(
-				input("hidden").att$("name", "gameId").att$("value", userSession.id),
+				input("hidden").att$("name", "userId").att$("value", userSession.id),
 				input("hidden").att$("name", "gameId").att$("value", gameId),
 				div(
 					label("Nota")
@@ -53,10 +65,13 @@ const formRating = (props) => {
 						  <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576zm6.787-8.201L1.591 6.602l4.339 2.76z"/>
 						</svg>`),
 						span("Enviar")
-					).class$("btn btn-light btn-sm")
+					)
+						.class$("btn btn-light btn-sm")
 						.att$("type", "submit")
+						.onclick$(handleRating)
 				).class$("d-flex justify-content-end")
 			)
+				.id$("form-rating")
 				.att$("method", "POST")
 		).class$("rounded mb-5")
 			.style$("border: 1px solid #27272a; padding: 10px")
@@ -108,7 +123,7 @@ const game = (game) => {
 	}, 0)
 
 	return div(
-		img("image/" + imageName).att$("alt", "Capa do jogo " + title),
+		img("image/" + imageName).att$("alt", "Capa do jogo " + title).style$("width: 200px"),
 		div(
 			div(
 				span("Informações gerais").class$("fw-bold fs-6"),

@@ -5,9 +5,7 @@ const registerGame = () => {
 
 	const handleRegisterGame = async (e) => {
 		e.preventDefault();
-
 		const form = new FormData(document.getElementById("register-game"));
-
 		await onRegisterGame(form);
 	}
 

@@ -22,13 +22,6 @@ const formGame = (props) => {
 		await onUpdateGame(id, form);
 	}
 
-	const handlePressEnter = (e) => {
-		if (e.keyCode === 13) {
-			e.preventDefault();
-			handleRegisterGame(e);
-		}
-	}
-
 	return form(
 		input("hidden").att$("name", "id").att$("value", id),
 		div(
@@ -100,7 +93,7 @@ const formGame = (props) => {
 			a("Cancelar")
 				.class$("btn btn-secondary btn-sm")
 				.att$("href", "#/games"),
-			button("Cadastrar Jogo")
+			button("Atualizar Jogo")
 				.class$("btn btn-light btn-sm")
 				.att$("type", "submit")
 				.onclick$(handleUpdateGame)
@@ -108,7 +101,6 @@ const formGame = (props) => {
 	)
 		.id$("update-game")
 		.att$("method", "POST")
-		.onkeydown$(handlePressEnter);
 
 }
 

@@ -1,6 +1,8 @@
 package controller;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -11,8 +13,14 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 
+import model.entities.Game.Game;
 import model.entities.Rating.Rating;
+import model.entities.User.User;
+import model.payload.Category.CategoryRequest;
+import model.payload.Rating.SendRatingRequest;
+import repository.impl.GameRepository;
 import repository.impl.RatingRepository;
+import repository.impl.UserRepository;
 
 /**
  * Servlet implementation class RatingServlet
@@ -22,6 +30,8 @@ public class RatingServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	private final RatingRepository ratingRepository;
+	private final UserRepository userRepository;
+	private final GameRepository gameRepository;
 	
     /**
      * @see HttpServlet#HttpServlet()
@@ -29,6 +39,8 @@ public class RatingServlet extends HttpServlet {
     public RatingServlet() {
         super();
         this.ratingRepository = new RatingRepository();
+        this.userRepository = new UserRepository();
+        this.gameRepository = new GameRepository();
     }
 
 	/**
@@ -87,8 +99,42 @@ public class RatingServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		BufferedReader reader = request.getReader();
+		Gson gson = new Gson();
+
+		SendRatingRequest sendRatingRequest = gson.fromJson(reader, SendRatingRequest.class);
+		
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+
+		if(sendRatingRequest != null 
+				&& !sendRatingRequest.description().isEmpty()
+				&& sendRatingRequest.userId() != null
+				&& sendRatingRequest.gameId() != null
+				&& sendRatingRequest.stars() != 0) {
+			
+			Rating rating = new Rating();
+			rating.setDescription(sendRatingRequest.description());
+			rating.setStars(sendRatingRequest.stars());
+			rating.setCreatedAt(LocalDateTime.now().toString());
+
+			User user = userRepository.findById(sendRatingRequest.userId());
+			if(user != null) {
+				rating.setUser(user);
+			}
+
+			Game game = gameRepository.findById(sendRatingRequest.gameId());
+			if(game != null) {
+				rating.setGame(game);
+			}
+
+			ratingRepository.save(rating);
+			response.setStatus(200);
+		}else {
+			response.setStatus(400);
+		}
+		
+		
 	}
 
 }
